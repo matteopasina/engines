@@ -17,8 +17,17 @@ def checkMsgDay(sorted_messages):
     max_msgs_day = 5
     tot_msg = len(sorted_messages)
     user_pref = '0'
+    max_same_resource = 2
+    msgs_same_resource = 1
+    current_resource = sorted_messages[0].miniplan_id
 
     for im in range(1, tot_msg):
+
+        if sorted_messages[im].miniplan_id == current_resource:
+            msgs_same_resource += 1
+        if msgs_same_resource > max_same_resource:
+            sorted_messages[im].date = sorted_messages[im].date + timedelta(days=1)
+
         if sorted_messages[im].date == current_day:
             msg_this_day.append(sorted_messages[im])
 
@@ -57,6 +66,37 @@ def checkMsgDay(sorted_messages):
                 sorted_messages[i] = updated_times.pop()
                 sorted_messages[i].date = sorted_messages[i].date.date()
                 sorted_messages[i].time = sorted_messages[i].time.time()
+
+def checkMsgDayV2(messages):
+    max_msgs_day = 5
+    max_same_resource = 2
+
+    for day in messages.keys():
+
+        while len(messages[day]) > max_msgs_day:
+            if day + timedelta(days=1) not in messages:
+                messages[day + timedelta(days=1)] = [messages[day].pop()]
+            else:
+                messages[day + timedelta(days=1)].append(messages[day].pop())
+
+        for m in messages[day]:
+            c = 0
+            for mj in messages[day]:
+                if m.miniplan_id == mj.miniplan_id:
+                    c+=1
+                if c > max_same_resource:
+                    if day + timedelta(days=1) not in messages:
+                        messages[day + timedelta(days=1)] = [messages[day].pop()]
+                    else:
+                        messages[day + timedelta(days=1)].append(messages[day].pop())
+                    c-=1
+
+
+    for m in messages:
+        for mj in messages[m]:
+            print mj.miniplan_id
+        print
+
 
 
 def checkMsgsPerHour(messages_same_day, pref=None):
@@ -117,6 +157,7 @@ def launch_engine_two():
     errors = {}
     id_user = 0
     all_messages = []
+    dict_m = {}
     # miniplans = json.load(urllib2.urlopen('https://api/c4a-DBmanager/getMiniplans/id_user=' + id_user))
     with open('csv/prova_miniplans.csv') as csvmessages:
         miniplans = csv.DictReader(csvmessages)
@@ -126,6 +167,14 @@ def launch_engine_two():
 
     sorted_messages = sorted(all_messages, key=attrgetter('date', 'time'))
 
-    checkMsgDay(sorted_messages)
+    for m in sorted_messages:
+        if m.date.date() not in dict_m:
+            dict_m[m.date.date()] = [m]
+        else:
+            dict_m[m.date.date()].append(m)
+
+    # checkMsgDay(sorted_messages)
+
+    checkMsgDayV2(dict_m)
 
     return encodePlan(errors, sorted_messages)
