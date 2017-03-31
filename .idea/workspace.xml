@@ -2,9 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5cc0c74d-eaee-4e7a-b0f8-f5478632f0c3" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/controller/Utilities.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/controller/getData.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/model/Miniplan.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/ChannelManager.py" afterPath="$PROJECT_DIR$/controller/ChannelManager.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/Json_manager.py" afterPath="$PROJECT_DIR$/controller/Json_manager.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/Scheduler.py" afterPath="$PROJECT_DIR$/controller/Scheduler.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/engine_one.py" afterPath="$PROJECT_DIR$/controller/engine_one.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/engine_two.py" afterPath="$PROJECT_DIR$/controller/engine_two.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mainLocal.py" afterPath="$PROJECT_DIR$/mainLocal.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/csv/prova_miniplans.csv" afterPath="$PROJECT_DIR$/csv/prova_miniplans.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/Message.py" afterPath="$PROJECT_DIR$/model/Message.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,46 +21,26 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/city4ageV2$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1490971814055" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/city4ageV2$mainLocal.coverage" NAME="mainLocal Coverage Results" MODIFIED="1490972092545" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="engine_two.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="engine_two.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controller/engine_two.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="83" column="36" lean-forward="false" selection-start-line="83" selection-start-column="36" selection-end-line="83" selection-end-column="36" />
+            <state relative-caret-position="340">
+              <caret line="173" column="5" lean-forward="false" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
               <folding>
-                <element signature="e#43#63#0" expanded="true" />
-                <element signature="e#3787#4280#0" expanded="false" />
-                <element signature="e#4344#5721#0" expanded="false" />
-                <marker date="1490780982000" expanded="false" signature="309:2748" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Message.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/model/Message.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HourManager.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controller/HourManager.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="23" lean-forward="false" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
-              <folding>
-                <element signature="e#42#62#0" expanded="true" />
-                <element signature="e#146#1893#0" expanded="false" />
-                <element signature="e#1937#3386#0" expanded="false" />
+                <element signature="e#43#64#0" expanded="true" />
+                <element signature="e#290#3371#0" expanded="false" />
+                <element signature="e#3430#3923#0" expanded="false" />
+                <element signature="e#3987#5364#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -71,31 +59,31 @@
       <file leaf-file-name="Json_manager.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controller/Json_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="151">
-              <caret line="11" column="36" lean-forward="false" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
+            <state relative-caret-position="295">
+              <caret line="28" column="4" lean-forward="false" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="4" />
               <folding>
                 <element signature="e#42#53#0" expanded="true" />
                 <element signature="e#295#478#1" expanded="false" />
-                <element signature="e#1315#2289#0" expanded="false" />
-                <element signature="e#1315#1498#1" expanded="false" />
-                <element signature="e#2329#3193#0" expanded="false" />
-                <element signature="e#2329#2500#1" expanded="false" />
-                <element signature="e#2601#3174#0" expanded="false" />
-                <element signature="e#3235#3692#0" expanded="false" />
-                <element signature="e#3235#3406#1" expanded="false" />
-                <element signature="e#3729#4473#0" expanded="false" />
-                <element signature="e#3729#3936#1" expanded="false" />
-                <element signature="e#4510#5342#0" expanded="false" />
-                <element signature="e#4510#4717#1" expanded="false" />
-                <element signature="e#5376#6430#0" expanded="false" />
-                <element signature="e#5376#5505#1" expanded="false" />
-                <element signature="e#6467#7179#0" expanded="false" />
-                <element signature="e#7223#7419#0" expanded="false" />
-                <element signature="e#7223#7410#1" expanded="false" />
-                <element signature="e#7448#7821#0" expanded="false" />
-                <element signature="e#7448#7606#1" expanded="false" />
-                <element signature="e#7645#7691#0" expanded="false" />
-                <element signature="e#7730#7776#0" expanded="false" />
+                <element signature="e#1311#2285#0" expanded="false" />
+                <element signature="e#1311#1494#1" expanded="false" />
+                <element signature="e#2325#3189#0" expanded="false" />
+                <element signature="e#2325#2496#1" expanded="false" />
+                <element signature="e#2597#3170#0" expanded="false" />
+                <element signature="e#3231#3688#0" expanded="false" />
+                <element signature="e#3231#3402#1" expanded="false" />
+                <element signature="e#3725#4469#0" expanded="false" />
+                <element signature="e#3725#3932#1" expanded="false" />
+                <element signature="e#4506#5338#0" expanded="false" />
+                <element signature="e#4506#4713#1" expanded="false" />
+                <element signature="e#5372#6426#0" expanded="false" />
+                <element signature="e#5372#5501#1" expanded="false" />
+                <element signature="e#6463#7175#0" expanded="false" />
+                <element signature="e#7219#7415#0" expanded="false" />
+                <element signature="e#7219#7406#1" expanded="false" />
+                <element signature="e#7444#7817#0" expanded="false" />
+                <element signature="e#7444#7602#1" expanded="false" />
+                <element signature="e#7641#7687#0" expanded="false" />
+                <element signature="e#7726#7772#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -104,8 +92,8 @@
       <file leaf-file-name="engine_one.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controller/engine_one.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="55" column="62" lean-forward="false" selection-start-line="55" selection-start-column="62" selection-end-line="55" selection-end-column="62" />
+            <state relative-caret-position="-35">
+              <caret line="24" column="33" lean-forward="false" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
               <folding>
                 <element signature="e#42#77#0" expanded="true" />
               </folding>
@@ -113,31 +101,29 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ChannelManager.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controller/ChannelManager.py">
+      <file leaf-file-name="Scheduler.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controller/Scheduler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="33" column="0" lean-forward="true" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+            <state relative-caret-position="174">
+              <caret line="317" column="0" lean-forward="false" selection-start-line="317" selection-start-column="0" selection-end-line="317" selection-end-column="0" />
               <folding>
-                <element signature="e#159#650#0" expanded="false" />
-                <element signature="e#159#346#1" expanded="false" />
-                <element signature="e#351#459#0" expanded="false" />
-                <element signature="e#695#1093#0" expanded="false" />
-                <element signature="e#695#866#1" expanded="false" />
-                <element signature="e#935#1057#0" expanded="false" />
-                <element signature="e#1006#1057#0" expanded="false" />
-                <element signature="e#1163#1812#0" expanded="false" />
-                <element signature="e#1163#1376#1" expanded="false" />
+                <element signature="e#573#1679#0" expanded="false" />
+                <element signature="e#1755#4211#0" expanded="false" />
+                <element signature="e#4306#7340#0" expanded="false" />
+                <element signature="e#7441#10501#0" expanded="false" />
+                <element signature="e#10577#12924#0" expanded="false" />
+                <element signature="e#12991#15898#0" expanded="false" />
+                <element signature="e#15962#18625#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="prova_miniplans.csv" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/csv/prova_miniplans.csv">
+      <file leaf-file-name="mainLocal.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mainLocal.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="1" lean-forward="false" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+            <state relative-caret-position="15">
+              <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -146,35 +132,39 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="21" />
-              <folding>
-                <element signature="e#23#55#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="210">
+              <caret line="16" column="21" lean-forward="true" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Scheduler.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/controller/Scheduler.py">
+      <file leaf-file-name="prova_import_resources.csv" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/csv/prova_import_resources.csv">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="626">
-              <caret line="309" column="27" lean-forward="true" selection-start-line="309" selection-start-column="27" selection-end-line="309" selection-end-column="27" />
-              <folding>
-                <element signature="e#42#53#0" expanded="true" />
-                <element signature="e#523#1626#0" expanded="false" />
-                <element signature="e#1702#4155#0" expanded="false" />
-                <element signature="e#4250#7281#0" expanded="false" />
-                <element signature="e#7382#10439#0" expanded="false" />
-                <element signature="e#12783#15581#0" expanded="false" />
-                <element signature="e#15645#18163#0" expanded="false" />
-                <element signature="e#18227#19133#0" expanded="false" />
-                <element signature="e#19190#19802#0" expanded="false" />
-                <element signature="e#19845#19984#0" expanded="false" />
-                <element signature="e#20041#20486#0" expanded="false" />
-                <element signature="e#20589#21382#0" expanded="false" />
-                <element signature="e#21409#21836#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="15">
+              <caret line="1" column="400" lean-forward="true" selection-start-line="1" selection-start-column="400" selection-end-line="1" selection-end-column="400" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Utilities.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controller/Utilities.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="prova_miniplans.csv" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/csv/prova_miniplans.csv">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="494" lean-forward="false" selection-start-line="7" selection-start-column="494" selection-end-line="7" selection-end-column="494" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -207,7 +197,6 @@
         <option value="$PROJECT_DIR$/Request.py" />
         <option value="$PROJECT_DIR$/controller/__init__.py" />
         <option value="$PROJECT_DIR$/model/Plan.py" />
-        <option value="$PROJECT_DIR$/model/Miniplan.py" />
         <option value="$PROJECT_DIR$/model/Greetings.py" />
         <option value="$PROJECT_DIR$/model/Message_text.py" />
         <option value="$PROJECT_DIR$/model/Response.py" />
@@ -223,22 +212,31 @@
         <option value="$PROJECT_DIR$/csv/prova_import_resources.csv" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/csv/prova_import_messages.csv" />
-        <option value="$PROJECT_DIR$/controller/Scheduler.py" />
         <option value="$PROJECT_DIR$/controller/HourManager.py" />
         <option value="$PROJECT_DIR$/controller/GenerateMessageText.py" />
-        <option value="$PROJECT_DIR$/controller/engine_one.py" />
-        <option value="$PROJECT_DIR$/controller/ChannelManager.py" />
-        <option value="$PROJECT_DIR$/model/Message.py" />
         <option value="$PROJECT_DIR$/model/Request.py" />
         <option value="$PROJECT_DIR$/model/Resource.py" />
         <option value="$PROJECT_DIR$/model/Template.py" />
         <option value="$PROJECT_DIR$/model/User.py" />
-        <option value="$PROJECT_DIR$/controller/Json_manager.py" />
-        <option value="$PROJECT_DIR$/csv/prova_miniplans.csv" />
+        <option value="$PROJECT_DIR$/controller/Utilities.py" />
+        <option value="$PROJECT_DIR$/controller/ChannelManager.py" />
+        <option value="$PROJECT_DIR$/controller/getData.py" />
         <option value="$PROJECT_DIR$/mainLocal.py" />
+        <option value="$PROJECT_DIR$/controller/engine_one.py" />
+        <option value="$PROJECT_DIR$/controller/Scheduler.py" />
+        <option value="$PROJECT_DIR$/csv/prova_miniplans.csv" />
+        <option value="$PROJECT_DIR$/model/Miniplan.py" />
+        <option value="$PROJECT_DIR$/model/Message.py" />
+        <option value="$PROJECT_DIR$/controller/Json_manager.py" />
         <option value="$PROJECT_DIR$/controller/engine_two.py" />
       </list>
     </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
     <option name="width" value="1440" />
@@ -260,7 +258,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -283,34 +280,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="city4ageV2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="city4ageV2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="csv" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="city4ageV2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="city4ageV2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="controller" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -318,17 +287,31 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="FullScreen" value="true" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/controller" />
       <recent name="$PROJECT_DIR$/classes" />
     </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
   </component>
   <component name="RunManager" selected="Python.mainLocal">
     <configuration default="false" name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -343,9 +326,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="city4ageV2" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/controller/engine_one.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
     <configuration default="false" name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -360,9 +345,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="city4ageV2" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
     <configuration default="false" name="mainLocal" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -377,9 +364,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="city4ageV2" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mainLocal.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
     <configuration default="false" name="engine_two" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -394,9 +383,75 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="city4ageV2" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/controller/engine_two.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="city4ageV2" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="city4ageV2" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PyLettuceRunConfigurationType" factoryName="Lettuce">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="city4ageV2" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
       <method />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -411,9 +466,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="city4ageV2" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="Tox" factoryName="Tox">
@@ -425,26 +482,24 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <module name="city4ageV2" />
       <method />
     </configuration>
-    <configuration default="true" type="tests" factoryName="Attests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
       <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="city4ageV2" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -457,6 +512,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="city4ageV2" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="" />
       <option name="CLASS_NAME" value="" />
       <option name="METHOD_NAME" value="" />
@@ -476,15 +532,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="city4ageV2" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="_new_regexPattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;.&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
@@ -497,16 +549,10 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="city4ageV2" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;.&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="py.test">
@@ -519,18 +565,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="city4ageV2" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="testToRun" value="" />
-      <option name="keywords" value="" />
-      <option name="params" value="" />
-      <option name="USE_PARAM" value="false" />
-      <option name="USE_KEYWORD" value="false" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;.&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method />
     </configuration>
     <list size="4">
@@ -547,6 +586,25 @@
         <item index="3" class="java.lang.String" itemvalue="Python.main" />
       </list>
     </recent_temporary>
+    <configuration default="true" type="tests" factoryName="Attests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="city4ageV2" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
@@ -559,96 +617,58 @@
       <option name="presentableId" value="Default" />
       <updated>1487932580905</updated>
     </task>
+    <task id="LOCAL-00001" summary="engine two">
+      <created>1490791525611</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1490791525611</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18125" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942554" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33763188" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34583822" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18125" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942554" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39976552" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942554" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="engine two" />
+    <option name="LAST_COMMIT_MESSAGE" value="engine two" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="65" />
+      <option name="time" value="81" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/model/User.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="22" lean-forward="false" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/Greeting.py" />
-    <entry file="file://$PROJECT_DIR$/controller/Scheduler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2085">
-          <caret line="139" column="70" lean-forward="false" selection-start-line="139" selection-start-column="70" selection-end-line="139" selection-end-column="70" />
-          <folding>
-            <element signature="e#42#53#0" expanded="true" />
-            <element signature="e#523#1626#0" expanded="false" />
-            <element signature="e#1702#4155#0" expanded="false" />
-            <element signature="e#4250#7281#0" expanded="false" />
-            <element signature="e#7382#10439#0" expanded="false" />
-            <element signature="e#12783#15581#0" expanded="false" />
-            <element signature="e#15645#18163#0" expanded="false" />
-            <element signature="e#18227#19133#0" expanded="false" />
-            <element signature="e#19190#19802#0" expanded="false" />
-            <element signature="e#19845#19984#0" expanded="false" />
-            <element signature="e#20041#20486#0" expanded="false" />
-            <element signature="e#20589#21382#0" expanded="false" />
-            <element signature="e#21409#21836#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controller/GenerateMessageText.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="15" column="23" lean-forward="false" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controller/Json_manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controller/engine_one.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="11" column="39" lean-forward="false" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
-          <folding>
-            <element signature="e#42#77#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model/Message.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -700,19 +720,16 @@
         <state relative-caret-position="675">
           <caret line="48" column="57" lean-forward="true" selection-start-line="48" selection-start-column="4" selection-end-line="48" selection-end-column="57" />
           <folding>
-            <element signature="e#42#53#0" expanded="true" />
-            <element signature="e#523#1626#0" expanded="false" />
-            <element signature="e#1702#4155#0" expanded="false" />
-            <element signature="e#4250#7281#0" expanded="false" />
-            <element signature="e#7382#10439#0" expanded="false" />
-            <element signature="e#12783#15581#0" expanded="false" />
-            <element signature="e#15645#18163#0" expanded="false" />
-            <element signature="e#18227#19133#0" expanded="false" />
-            <element signature="e#19190#19802#0" expanded="false" />
-            <element signature="e#19845#19984#0" expanded="false" />
-            <element signature="e#20041#20486#0" expanded="false" />
-            <element signature="e#20589#21382#0" expanded="false" />
-            <element signature="e#21409#21836#0" expanded="false" />
+            <element signature="e#42#52#0" expanded="false" />
+            <element signature="e#573#1679#0" expanded="false" />
+            <element signature="e#1755#4211#0" expanded="false" />
+            <element signature="e#4306#7340#0" expanded="false" />
+            <element signature="e#7441#10501#0" expanded="false" />
+            <element signature="e#10577#12924#0" expanded="false" />
+            <element signature="e#12991#15898#0" expanded="false" />
+            <element signature="e#15962#18625#0" expanded="false" />
+            <element signature="e#18689#19822#0" expanded="false" />
+            <element signature="e#19925#20718#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -791,20 +808,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/csv/prova_import_resources.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="400" lean-forward="true" selection-start-line="1" selection-start-column="400" selection-end-line="1" selection-end-column="400" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/csv/prova_import_messages.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="66" lean-forward="false" selection-start-line="0" selection-start-column="59" selection-end-line="0" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="161">
@@ -823,13 +826,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/Request.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -855,7 +851,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mainLocal.py">
+    <entry file="uml://Python/#/Users/matteo/PycharmProjects/city4ageV2/controller/Scheduler.py">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>#/Users/matteo/PycharmProjects/city4ageV2/controller/Scheduler.py</OriginalElement>
+          <nodes />
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="0.1" x="590.0" y="-101.0" />
+          <SelectedNodes />
+          <Categories />
+          <SCOPE>All</SCOPE>
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/#/Users/matteo/PycharmProjects/city4ageV2/controller/__init__.py">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>#/Users/matteo/PycharmProjects/city4ageV2/controller/__init__.py</OriginalElement>
+          <nodes />
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="590.0" y="399.0" />
+          <SelectedNodes />
+          <Categories />
+          <SCOPE>All</SCOPE>
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://Python/#/Users/matteo/PycharmProjects/city4ageV2/main.py">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>Python</ID>
+          <OriginalElement>#/Users/matteo/PycharmProjects/city4ageV2/main.py</OriginalElement>
+          <nodes />
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="590.0" y="399.0" />
+          <SelectedNodes />
+          <Categories />
+          <SCOPE>All</SCOPE>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/Request.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
@@ -865,18 +906,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controller/ChannelManager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="33" column="0" lean-forward="true" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+        <state relative-caret-position="180">
+          <caret line="52" column="46" lean-forward="false" selection-start-line="52" selection-start-column="46" selection-end-line="52" selection-end-column="46" />
           <folding>
-            <element signature="e#159#650#0" expanded="false" />
-            <element signature="e#159#346#1" expanded="false" />
-            <element signature="e#351#459#0" expanded="false" />
-            <element signature="e#695#1093#0" expanded="false" />
-            <element signature="e#695#866#1" expanded="false" />
-            <element signature="e#935#1057#0" expanded="false" />
-            <element signature="e#1006#1057#0" expanded="false" />
-            <element signature="e#1163#1812#0" expanded="false" />
-            <element signature="e#1163#1376#1" expanded="false" />
+            <element signature="e#162#653#0" expanded="false" />
+            <element signature="e#162#349#1" expanded="false" />
+            <element signature="e#354#462#0" expanded="false" />
+            <element signature="e#698#1096#0" expanded="false" />
+            <element signature="e#698#869#1" expanded="false" />
+            <element signature="e#938#1060#0" expanded="false" />
+            <element signature="e#1009#1060#0" expanded="false" />
+            <element signature="e#1166#1815#0" expanded="false" />
+            <element signature="e#1166#1379#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -886,10 +927,50 @@
         <state relative-caret-position="15">
           <caret line="1" column="23" lean-forward="false" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
           <folding>
-            <element signature="e#42#62#0" expanded="true" />
+            <element signature="e#42#62#0" expanded="false" />
             <element signature="e#146#1893#0" expanded="false" />
             <element signature="e#1937#3386#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/csv/prova_import_messages.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-590">
+          <caret line="0" column="66" lean-forward="false" selection-start-line="0" selection-start-column="59" selection-end-line="0" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/csv/prova_import_resources.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="400" lean-forward="true" selection-start-line="1" selection-start-column="400" selection-end-line="1" selection-end-column="400" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/csv/prova_miniplans.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="494" lean-forward="false" selection-start-line="7" selection-start-column="494" selection-end-line="7" selection-end-column="494" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/Miniplan.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="66" lean-forward="false" selection-start-line="5" selection-start-column="66" selection-end-line="5" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/Message.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="44" lean-forward="false" selection-start-line="20" selection-start-column="44" selection-end-line="20" selection-end-column="44" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -901,104 +982,104 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/Message.py">
+    <entry file="file://$PROJECT_DIR$/controller/Scheduler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="174">
+          <caret line="317" column="0" lean-forward="false" selection-start-line="317" selection-start-column="0" selection-end-line="317" selection-end-column="0" />
+          <folding>
+            <element signature="e#573#1679#0" expanded="false" />
+            <element signature="e#1755#4211#0" expanded="false" />
+            <element signature="e#4306#7340#0" expanded="false" />
+            <element signature="e#7441#10501#0" expanded="false" />
+            <element signature="e#10577#12924#0" expanded="false" />
+            <element signature="e#12991#15898#0" expanded="false" />
+            <element signature="e#15962#18625#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/controller/Utilities.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="21" />
-          <folding>
-            <element signature="e#23#55#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controller/Json_manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="11" column="36" lean-forward="false" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
-          <folding>
-            <element signature="e#42#53#0" expanded="true" />
-            <element signature="e#295#478#1" expanded="false" />
-            <element signature="e#1315#2289#0" expanded="false" />
-            <element signature="e#1315#1498#1" expanded="false" />
-            <element signature="e#2329#3193#0" expanded="false" />
-            <element signature="e#2329#2500#1" expanded="false" />
-            <element signature="e#2601#3174#0" expanded="false" />
-            <element signature="e#3235#3692#0" expanded="false" />
-            <element signature="e#3235#3406#1" expanded="false" />
-            <element signature="e#3729#4473#0" expanded="false" />
-            <element signature="e#3729#3936#1" expanded="false" />
-            <element signature="e#4510#5342#0" expanded="false" />
-            <element signature="e#4510#4717#1" expanded="false" />
-            <element signature="e#5376#6430#0" expanded="false" />
-            <element signature="e#5376#5505#1" expanded="false" />
-            <element signature="e#6467#7179#0" expanded="false" />
-            <element signature="e#7223#7419#0" expanded="false" />
-            <element signature="e#7223#7410#1" expanded="false" />
-            <element signature="e#7448#7821#0" expanded="false" />
-            <element signature="e#7448#7606#1" expanded="false" />
-            <element signature="e#7645#7691#0" expanded="false" />
-            <element signature="e#7730#7776#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/csv/prova_miniplans.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="1" lean-forward="false" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controller/engine_two.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="83" column="36" lean-forward="false" selection-start-line="83" selection-start-column="36" selection-end-line="83" selection-end-column="36" />
-          <folding>
-            <element signature="e#43#63#0" expanded="true" />
-            <element signature="e#3787#4280#0" expanded="false" />
-            <element signature="e#4344#5721#0" expanded="false" />
-            <marker date="1490780982000" expanded="false" signature="309:2748" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controller/engine_one.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="55" column="62" lean-forward="false" selection-start-line="55" selection-start-column="62" selection-end-line="55" selection-end-column="62" />
+        <state relative-caret-position="-35">
+          <caret line="24" column="33" lean-forward="false" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
           <folding>
             <element signature="e#42#77#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controller/Scheduler.py">
+    <entry file="file://$PROJECT_DIR$/controller/getData.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="626">
-          <caret line="309" column="27" lean-forward="true" selection-start-line="309" selection-start-column="27" selection-end-line="309" selection-end-column="27" />
+        <state relative-caret-position="0">
+          <caret line="0" column="25" lean-forward="false" selection-start-line="0" selection-start-column="25" selection-end-line="0" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mainLocal.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="16" column="21" lean-forward="true" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controller/Json_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="28" column="4" lean-forward="false" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="4" />
           <folding>
             <element signature="e#42#53#0" expanded="true" />
-            <element signature="e#523#1626#0" expanded="false" />
-            <element signature="e#1702#4155#0" expanded="false" />
-            <element signature="e#4250#7281#0" expanded="false" />
-            <element signature="e#7382#10439#0" expanded="false" />
-            <element signature="e#12783#15581#0" expanded="false" />
-            <element signature="e#15645#18163#0" expanded="false" />
-            <element signature="e#18227#19133#0" expanded="false" />
-            <element signature="e#19190#19802#0" expanded="false" />
-            <element signature="e#19845#19984#0" expanded="false" />
-            <element signature="e#20041#20486#0" expanded="false" />
-            <element signature="e#20589#21382#0" expanded="false" />
-            <element signature="e#21409#21836#0" expanded="false" />
+            <element signature="e#295#478#1" expanded="false" />
+            <element signature="e#1311#2285#0" expanded="false" />
+            <element signature="e#1311#1494#1" expanded="false" />
+            <element signature="e#2325#3189#0" expanded="false" />
+            <element signature="e#2325#2496#1" expanded="false" />
+            <element signature="e#2597#3170#0" expanded="false" />
+            <element signature="e#3231#3688#0" expanded="false" />
+            <element signature="e#3231#3402#1" expanded="false" />
+            <element signature="e#3725#4469#0" expanded="false" />
+            <element signature="e#3725#3932#1" expanded="false" />
+            <element signature="e#4506#5338#0" expanded="false" />
+            <element signature="e#4506#4713#1" expanded="false" />
+            <element signature="e#5372#6426#0" expanded="false" />
+            <element signature="e#5372#5501#1" expanded="false" />
+            <element signature="e#6463#7175#0" expanded="false" />
+            <element signature="e#7219#7415#0" expanded="false" />
+            <element signature="e#7219#7406#1" expanded="false" />
+            <element signature="e#7444#7817#0" expanded="false" />
+            <element signature="e#7444#7602#1" expanded="false" />
+            <element signature="e#7641#7687#0" expanded="false" />
+            <element signature="e#7726#7772#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controller/engine_two.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="173" column="5" lean-forward="false" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
+          <folding>
+            <element signature="e#43#64#0" expanded="true" />
+            <element signature="e#290#3371#0" expanded="false" />
+            <element signature="e#3430#3923#0" expanded="false" />
+            <element signature="e#3987#5364#0" expanded="false" />
           </folding>
         </state>
       </provider>

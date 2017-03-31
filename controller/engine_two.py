@@ -1,102 +1,99 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import json, urllib2
+import json, requests
 from datetime import datetime, timedelta
 from operator import attrgetter
-from controller.Json_manager import mapMessage, encodePlan
-from model.Message import Message
+from controller.Json_manager import mapMessage, encodePlan, encodeResponse
 import random as rnd
 import csv
 import math
 
 
-def checkMsgDay(sorted_messages):
-    current_day = sorted_messages[0].date
-    msg_this_day = [sorted_messages[0]]
-    max_msgs_day = 5
-    tot_msg = len(sorted_messages)
-    user_pref = '0'
-    max_same_resource = 2
-    msgs_same_resource = 1
-    current_resource = sorted_messages[0].miniplan_id
-
-    for im in range(1, tot_msg):
-
-        if sorted_messages[im].miniplan_id == current_resource:
-            msgs_same_resource += 1
-        if msgs_same_resource > max_same_resource:
-            sorted_messages[im].date = sorted_messages[im].date + timedelta(days=1)
-
-        if sorted_messages[im].date == current_day:
-            msg_this_day.append(sorted_messages[im])
-
-        if sorted_messages[im].date != current_day:
-            updated_times = checkMsgsPerHour(msg_this_day, user_pref)
-            updated_times.reverse()
-            for i in range(im - len(updated_times), im):
-                sorted_messages[i] = updated_times.pop()
-                sorted_messages[i].date = sorted_messages[i].date.date()
-                sorted_messages[i].time = sorted_messages[i].time.time()
-            current_day = sorted_messages[im].date
-            msg_this_day = [sorted_messages[im]]
-
-        if len(msg_this_day) > max_msgs_day:
-            msg_this_day.pop()
-            secondindex = im
-            while sorted_messages[secondindex].date == current_day:
-                sorted_messages[secondindex].date = sorted_messages[secondindex].date + timedelta(days=1)
-                secondindex += 1
-                if secondindex >= tot_msg:
-                    break
-
-            updated_times = checkMsgsPerHour(msg_this_day, user_pref)
-            updated_times.reverse()
-            for i in range(im - len(updated_times), im):
-                sorted_messages[i] = updated_times.pop()
-                sorted_messages[i].date = sorted_messages[i].date.date()
-                sorted_messages[i].time = sorted_messages[i].time.time()
-            current_day = sorted_messages[im].date
-            msg_this_day = [sorted_messages[im]]
-
-        if sorted_messages[im] is sorted_messages[-1]:
-            updated_times = checkMsgsPerHour(msg_this_day, user_pref)
-            updated_times.reverse()
-            for i in range(im - len(updated_times) + 1, im + 1):
-                sorted_messages[i] = updated_times.pop()
-                sorted_messages[i].date = sorted_messages[i].date.date()
-                sorted_messages[i].time = sorted_messages[i].time.time()
-
-def checkMsgDayV2(messages):
+def checkMsgDay(messages):
     max_msgs_day = 5
     max_same_resource = 2
+    timezero = datetime.strptime('00:00:00', '%H:%M:%S').time()
 
-    for day in messages.keys():
+    '''
+    for m in messages:
+        print 'day ' + str(m)
+        for mj in messages[m]:
+            print str(mj.miniplan_id) + ' ' + str(mj.time.time())
+            print 'Dates: ' + str(mj.date) + ' ' + str(mj.expiration_date)
+            print
+        print
+    '''
 
-        while len(messages[day]) > max_msgs_day:
-            if day + timedelta(days=1) not in messages:
-                messages[day + timedelta(days=1)] = [messages[day].pop()]
-            else:
-                messages[day + timedelta(days=1)].append(messages[day].pop())
+    for day in sorted(messages.keys()):
 
         for m in messages[day]:
             c = 0
+            to_del = []
             for mj in messages[day]:
+
                 if m.miniplan_id == mj.miniplan_id:
-                    c+=1
-                if c > max_same_resource:
+                    c += 1
+
+                if c > max_same_resource and m.miniplan_id == mj.miniplan_id:
                     if day + timedelta(days=1) not in messages:
-                        messages[day + timedelta(days=1)] = [messages[day].pop()]
+                        mj.date = datetime.combine(day + timedelta(days=1), timezero)
+                        messages[day + timedelta(days=1)].append(mj)
+                        to_del.append(mj)
                     else:
-                        messages[day + timedelta(days=1)].append(messages[day].pop())
-                    c-=1
+                        mj.date = datetime.combine(day + timedelta(days=1), timezero)
+                        messages[day + timedelta(days=1)].append(mj)
+                        to_del.append(mj)
 
+            for d in to_del:
+                messages[day].remove(d)
 
+        if len(messages[day]) > max_msgs_day:
+
+            for m in messages[day]:
+
+                if (m.expiration_date - day) > timedelta(days=2):
+                    if day + timedelta(days=1) not in messages:
+                        messages[day].remove(m)
+                        m.date = datetime.combine(day + timedelta(days=1), timezero)
+                        messages[day + timedelta(days=1)].append(m)
+
+                    else:
+                        messages[day].remove(m)
+                        m.date = datetime.combine(day + timedelta(days=1), timezero)
+                        messages[day + timedelta(days=1)].append(m)
+
+                if len(messages[day]) <= max_msgs_day:
+                    break
+
+            if len(messages[day]) > max_msgs_day:
+                for m in messages[day]:
+
+                    if (m.expiration_date - day) > timedelta(days=1):
+                        if day + timedelta(days=1) not in messages:
+                            messages[day].remove(m)
+                            m.date = datetime.combine(day + timedelta(days=1), timezero)
+                            messages[day + timedelta(days=1)].append(m)
+
+                        else:
+                            messages[day].remove(m)
+                            m.date = datetime.combine(day + timedelta(days=1), timezero)
+                            messages[day + timedelta(days=1)].append(m)
+
+                    if len(messages[day]) <= max_msgs_day:
+                        break
+
+        messages[day] = checkMsgsPerHour(messages[day])
+
+    '''
     for m in messages:
+        print 'day after ' + str(m)
         for mj in messages[m]:
-            print mj.miniplan_id
+            # print str(mj.miniplan_id) + ' ' + str(mj.time)
+            print 'Dates: ' + str(mj.date) + ' ' + str(mj.expiration_date)
+            print
         print
-
+    '''
 
 
 def checkMsgsPerHour(messages_same_day, pref=None):
@@ -153,17 +150,31 @@ def scheduleMessagesInDay(messages_same_day, pref=None):
     return messages_same_day
 
 
+def rebuildMiniplans(all_messages):
+    miniplans = {}
+    for m in all_messages:
+        m.date=m.date.date()
+        m.time=m.time.time()
+        if m.miniplan_id not in miniplans:
+            miniplans[m.miniplan_id] = [m]
+        else:
+            miniplans[m.miniplan_id].append(m)
+    return miniplans
+
+
 def launch_engine_two():
     errors = {}
     id_user = 0
     all_messages = []
     dict_m = {}
-    # miniplans = json.load(urllib2.urlopen('https://api/c4a-DBmanager/getMiniplans/id_user=' + id_user))
+    # miniplans = json.load(requests.get('http://..../endpoint/getAllProfileMiniplanFinalMessages/' + id_user))
     with open('csv/prova_miniplans.csv') as csvmessages:
         miniplans = csv.DictReader(csvmessages)
         for m in miniplans:
             for key, value in json.loads(m['miniplan_body']).iteritems():
-                all_messages.append(mapMessage(value))
+                mes = mapMessage(value)
+                mes.expiration_date = datetime.strptime(m['to_date'], '%Y-%m-%d').date()
+                all_messages.append(mes)
 
     sorted_messages = sorted(all_messages, key=attrgetter('date', 'time'))
 
@@ -173,8 +184,11 @@ def launch_engine_two():
         else:
             dict_m[m.date.date()].append(m)
 
-    # checkMsgDay(sorted_messages)
+    checkMsgDay(dict_m)
 
-    checkMsgDayV2(dict_m)
+    miniplans = rebuildMiniplans(sorted_messages)
 
-    return encodePlan(errors, sorted_messages)
+    for mini in miniplans:
+        encodeResponse(errors,miniplans[mini])
+
+    #return encodePlan(errors, sorted_messages)

@@ -26,8 +26,8 @@ def encodeResponse(errors, miniplan):
                 json_message[key] = value
         miniplan_message[message.message_id] = json_message
 
-    # print json.dumps({'Errors': errors}, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
-    # print json.dumps({'Miniplan': miniplan_message}, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
+    print json.dumps({'Errors': errors}, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
+    print json.dumps({'Miniplan': miniplan_message}, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
     json_response['Errors'] = errors
     json_response['Miniplan'] = miniplan_message
     return json.dumps({'Response': json_response}, default=json_serial, sort_keys=True, indent=4,

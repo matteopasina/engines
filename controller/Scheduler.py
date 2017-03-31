@@ -1,14 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import json
-import random as rnd
-import urllib2
 import csv
+import random as rnd
 from datetime import datetime, timedelta
 
-from controller.ChannelManager import channelsAvailableTemplateUser, channelWithProbability
+from controller.ChannelManager import getChannelsAvailableTemplateUser, channelWithProbability
 from controller.GenerateMessageText import generate_message_text
 from controller.HourManager import scheduleHour, scheduleHourFromDate
+from controller.Utilities import mapDay, convertDatetime, checkMsgsOneDay
 from model.Message import Message
 
 
@@ -37,7 +36,7 @@ def scheduleRandom(request, resource, template, user):
 
     miniplan = [Message(count) for count in xrange(nmsg)]
 
-    channel = channelsAvailableTemplateUser(template, user)
+    channel = getChannelsAvailableTemplateUser(template, user)
 
     for i in range(0, nmsg):
         step_send_msg = timedelta(seconds=rnd.randrange(0, valid_interval.total_seconds(), 3600))
@@ -79,7 +78,7 @@ def scheduleEquallyDivided(request, resource, template, user):
     # creates miniplan that is a list of messages
     miniplan = [Message(count) for count in xrange(nmsg)]
 
-    channel = channelsAvailableTemplateUser(template, user)
+    channel = getChannelsAvailableTemplateUser(template, user)
 
     # for nmsg fill the miniplan msgs
     date = endtime - timedelta(days=1)
@@ -132,7 +131,7 @@ def scheduleProgressive(request, resource, template, user, const_div_interval=2)
 
     miniplan = [Message(count) for count in xrange(nmsg)]
 
-    channels = channelsAvailableTemplateUser(template, user)
+    channels = getChannelsAvailableTemplateUser(template, user)
 
     valid_interval = timedelta(seconds=valid_interval.total_seconds() / const_div_interval)
     for i in range(0, nmsg):
@@ -210,7 +209,7 @@ def schedulePeriodProgressive(request, resource, template, user, const_div_inter
 
     miniplan = [Message(count) for count in xrange(nmsg)]
 
-    channels = channelsAvailableTemplateUser(template, user)
+    channels = getChannelsAvailableTemplateUser(template, user)
 
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
@@ -278,7 +277,7 @@ def scheduleEquallyDividedPeriod(request, resource, template, user):
     # creates miniplan that is a list of messages
     miniplan = [Message(count, user.user_id, intervention_session_id=1) for count in xrange(nmsg)]
 
-    channels = channelsAvailableTemplateUser(template, user)
+    channels = getChannelsAvailableTemplateUser(template, user)
 
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
@@ -292,9 +291,15 @@ def scheduleEquallyDividedPeriod(request, resource, template, user):
     else:
         return errors, miniplan
 
+    #length of the loop depending on the msgs found
+    if len(msgs_tosend) < nmsg:
+        lenloop=len(msgs_tosend)
+    else:
+        lenloop=nmsg
+
     # for nmsg fill the miniplan msgs
     date = startime
-    for i in range(0, nmsg):
+    for i in range(0, lenloop):
         miniplan[i].date = date.date()
         miniplan[i].time = scheduleHour(user, None)
         miniplan[i].message_text = generate_message_text(user, msgs_tosend[i]['Text'], msgs_tosend[i]['URL'])
@@ -305,12 +310,12 @@ def scheduleEquallyDividedPeriod(request, resource, template, user):
 
         date += step_send_msg
 
-    miniplan = checkMsgsOneDay(miniplan, endtime, startime)
+    miniplan = checkMsgsOneDay(miniplan, endtime)
 
     return errors, miniplan
 
 
-def scheduleLogaritmic(request, resource, template, user):
+def scheduleLogarithmic(request, resource, template, user):
     '''
     Returns the miniplan scheduled with more frequency at the end of the interval
     It divides the interval for every msg with logaritmic growth:1 1/2 1/3 1/4
@@ -349,7 +354,7 @@ def scheduleLogaritmic(request, resource, template, user):
     if valid_interval > period:
         valid_interval = period
 
-    channels = channelsAvailableTemplateUser(template, user)
+    channels = getChannelsAvailableTemplateUser(template, user)
 
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
@@ -363,8 +368,14 @@ def scheduleLogaritmic(request, resource, template, user):
     else:
         return errors, miniplan
 
+    #length of the loop depending on the msgs found
+    if len(msgs_tosend) < nmsg:
+        lenloop=len(msgs_tosend)
+    else:
+        lenloop=nmsg
+
     valid_interval = timedelta(seconds=valid_interval.total_seconds())
-    for i in range(0, nmsg):
+    for i in range(0, lenloop):
         date = endtime - valid_interval
 
         miniplan[i].date = date.date()
@@ -372,7 +383,7 @@ def scheduleLogaritmic(request, resource, template, user):
         miniplan[i].time = scheduleHourFromDate(user, date).time()
 
         '''
-        # messages = json.load(urllib2.urlopen('https://api/c4a-DBmanager/getResource_messages/id_resource=' + request.resource+'&channels='))
+        # messages = json.load(urllib2.urlopen('http://..../endpoint/getResource/' + request.resource_id))
         '''
 
         miniplan[i].message_text = generate_message_text(user, msgs_tosend[i]['Text'], msgs_tosend[i]['URL'])
@@ -384,7 +395,7 @@ def scheduleLogaritmic(request, resource, template, user):
 
         valid_interval = timedelta(seconds=valid_interval.total_seconds() / (i + 2))
 
-    miniplan = checkMsgsOneDay(miniplan, endtime, startime)
+    miniplan = checkMsgsOneDay(miniplan, endtime)
 
     return errors, miniplan
 
@@ -418,7 +429,7 @@ def schedulePeriodic(request, resource, template, user):
 
     miniplan = [Message(count, user.user_id, intervention_session_id=1) for count in xrange(nmsg)]
 
-    channels = channelsAvailableTemplateUser(template, user)
+    channels = getChannelsAvailableTemplateUser(template, user)
 
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
@@ -438,9 +449,15 @@ def schedulePeriodic(request, resource, template, user):
         miniplan = []
         return errors, miniplan
 
+    #length of the loop depending on the msgs found
+    if len(msgs_tosend) < nmsg:
+        lenloop=len(msgs_tosend)
+    else:
+        lenloop=nmsg
+
     c = 0
     current_date = startime.date()
-    for i in range(0, nmsg):
+    for i in range(0, lenloop):
         while current_date < endtime.date():
             if current_date.weekday() == day_of_event - 1:
                 if c % int(resource.every) == 0:
@@ -456,7 +473,7 @@ def schedulePeriodic(request, resource, template, user):
 
             current_date += timedelta(days=1)
 
-    miniplan = checkMsgsOneDay(miniplan, endtime, startime)
+    miniplan = checkMsgsOneDay(miniplan, endtime)
 
     return errors, miniplan
 
@@ -478,58 +495,21 @@ def getListMessages(messages, nmsg, resource, channels):
             elif m['Channel'] in channels:
                 msgs.append(m)
 
-    for i in range(0, nmsg):
-        if i < len(comp_msgs):
-            list_messages.insert(int(comp_msgs[i]['Message_ID'][-2:]), comp_msgs[i])
-        elif len(msgs) != 0:
-            list_messages.insert(int(msgs[i - len(comp_msgs) + 1]['Message_ID'][-2:]) - 1, msgs[i - len(comp_msgs) + 1])
+    if len(comp_msgs)+len(msgs) < nmsg:
+        for c in comp_msgs:
+            list_messages.append(c)
+        for m in msgs:
+            list_messages.append(m)
+        return list_messages
 
-    return list_messages
+    else:
+        for i in range(0, nmsg):
+            if i < len(comp_msgs):
+                list_messages.insert(int(comp_msgs[i]['Message_ID'][-2:]), comp_msgs[i])
+            elif len(msgs) != 0:
+                list_messages.insert(int(msgs[i - len(comp_msgs) + 1]['Message_ID'][-2:]) - 1, msgs[i - len(comp_msgs) + 1])
 
-
-def convertDatetime(request, template, resource):
-    '''
-    Converts request.from request.to and template.period in datetimes
-    :param resource: a resource class
-    :param request: a request class
-    :param template: a template class
-    :return: 3 datetimes from from_date,to_date and period
-    '''
-    expirationtime = None
-    startime = datetime.strptime(request.from_date, '%d %b %Y')
-    endtime = datetime.strptime(request.to_date, '%d %b %Y')
-    if resource.to_date != None:
-        expirationtime = datetime.strptime(resource.to_date, '%d %b %Y')
-    period = timedelta(days=template.period * 7)
-
-    return startime, endtime, period, expirationtime
-
-
-def shiftMiniplan(miniplan, shift):
-    shift = timedelta(days=shift)
-    for i in range(0, len(miniplan)):
-        miniplan[i].date = miniplan[i].date + shift
-    return miniplan
-
-
-def checkMsgsOneDay(miniplan, endtime, startime):
-    c = 0
-    for i in range(0, len(miniplan)):
-        if miniplan[i].date == None:
-            c += 1
-
-        elif miniplan[i].date == miniplan[i - 1].date:
-            miniplan[i].date += timedelta(days=1)
-
-            if miniplan[i].date > endtime.date():
-                miniplan[i].date -= timedelta(days=1)
-                miniplan[i - 1].date -= timedelta(days=1)
-
-    while c > 0:
-        miniplan.pop()
-        c -= 1
-
-    return miniplan
+        return list_messages
 
 
 def checkForErrors(errors, endtime, expirationtime, startime, miniplan, nmsg, msgs_tosend_len):
@@ -553,20 +533,3 @@ def checkForErrors(errors, endtime, expirationtime, startime, miniplan, nmsg, ms
     return errors, miniplan, True, endtime
 
 
-def mapDay(on_day):
-    day_of_event = None
-    if on_day == 'Monday':
-        day_of_event = 0
-    elif on_day == 'Tuesday':
-        day_of_event = 1
-    elif on_day == 'Wednesday':
-        day_of_event = 2
-    elif on_day == 'Thursday':
-        day_of_event = 3
-    elif on_day == 'Friday':
-        day_of_event = 4
-    elif on_day == 'Saturday':
-        day_of_event = 5
-    elif on_day == 'Sunday':
-        day_of_event = 6
-    return day_of_event
