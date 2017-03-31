@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5cc0c74d-eaee-4e7a-b0f8-f5478632f0c3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/controller/Utilities.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/controller/getData.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/model/Miniplan.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/ChannelManager.py" afterPath="$PROJECT_DIR$/controller/ChannelManager.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/Json_manager.py" afterPath="$PROJECT_DIR$/controller/Json_manager.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/Scheduler.py" afterPath="$PROJECT_DIR$/controller/Scheduler.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/engine_one.py" afterPath="$PROJECT_DIR$/controller/engine_one.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/engine_two.py" afterPath="$PROJECT_DIR$/controller/engine_two.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/csv/prova_miniplans.csv" afterPath="$PROJECT_DIR$/csv/prova_miniplans.csv" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/Message.py" afterPath="$PROJECT_DIR$/model/Message.py" />
@@ -22,8 +16,8 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/city4ageV2$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1490971814055" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/city4ageV2$mainLocal.coverage" NAME="mainLocal Coverage Results" MODIFIED="1490972092545" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/city4ageV2$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1490973152818" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/city4ageV2$mainLocal.coverage" NAME="mainLocal Coverage Results" MODIFIED="1490973243308" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -34,14 +28,35 @@
       <file leaf-file-name="engine_two.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controller/engine_two.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="173" column="5" lean-forward="false" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
+            <state relative-caret-position="357">
+              <caret line="158" column="21" lean-forward="false" selection-start-line="158" selection-start-column="21" selection-end-line="158" selection-end-column="21" />
               <folding>
                 <element signature="e#43#64#0" expanded="true" />
-                <element signature="e#290#3371#0" expanded="false" />
-                <element signature="e#3430#3923#0" expanded="false" />
-                <element signature="e#3987#5364#0" expanded="false" />
+                <element signature="e#290#3692#0" expanded="false" />
+                <element signature="e#3751#4244#0" expanded="false" />
+                <element signature="e#4308#5685#0" expanded="false" />
+                <element signature="e#5728#6231#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Message.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/model/Message.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="78" lean-forward="false" selection-start-line="7" selection-start-column="78" selection-end-line="7" selection-end-column="78" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Miniplan.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/model/Miniplan.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="66" lean-forward="false" selection-start-line="5" selection-start-column="66" selection-end-line="5" selection-end-column="66" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -59,31 +74,31 @@
       <file leaf-file-name="Json_manager.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controller/Json_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="28" column="4" lean-forward="false" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="4" />
+            <state relative-caret-position="310">
+              <caret line="29" column="5" lean-forward="false" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
               <folding>
                 <element signature="e#42#53#0" expanded="true" />
                 <element signature="e#295#478#1" expanded="false" />
-                <element signature="e#1311#2285#0" expanded="false" />
-                <element signature="e#1311#1494#1" expanded="false" />
-                <element signature="e#2325#3189#0" expanded="false" />
-                <element signature="e#2325#2496#1" expanded="false" />
-                <element signature="e#2597#3170#0" expanded="false" />
-                <element signature="e#3231#3688#0" expanded="false" />
-                <element signature="e#3231#3402#1" expanded="false" />
-                <element signature="e#3725#4469#0" expanded="false" />
-                <element signature="e#3725#3932#1" expanded="false" />
-                <element signature="e#4506#5338#0" expanded="false" />
-                <element signature="e#4506#4713#1" expanded="false" />
-                <element signature="e#5372#6426#0" expanded="false" />
-                <element signature="e#5372#5501#1" expanded="false" />
-                <element signature="e#6463#7175#0" expanded="false" />
-                <element signature="e#7219#7415#0" expanded="false" />
-                <element signature="e#7219#7406#1" expanded="false" />
-                <element signature="e#7444#7817#0" expanded="false" />
-                <element signature="e#7444#7602#1" expanded="false" />
-                <element signature="e#7641#7687#0" expanded="false" />
-                <element signature="e#7726#7772#0" expanded="false" />
+                <element signature="e#1313#2287#0" expanded="false" />
+                <element signature="e#1313#1496#1" expanded="false" />
+                <element signature="e#2327#3191#0" expanded="false" />
+                <element signature="e#2327#2498#1" expanded="false" />
+                <element signature="e#2599#3172#0" expanded="false" />
+                <element signature="e#3233#3690#0" expanded="false" />
+                <element signature="e#3233#3404#1" expanded="false" />
+                <element signature="e#3727#4471#0" expanded="false" />
+                <element signature="e#3727#3934#1" expanded="false" />
+                <element signature="e#4508#5340#0" expanded="false" />
+                <element signature="e#4508#4715#1" expanded="false" />
+                <element signature="e#5374#6428#0" expanded="false" />
+                <element signature="e#5374#5503#1" expanded="false" />
+                <element signature="e#6465#7177#0" expanded="false" />
+                <element signature="e#7221#7417#0" expanded="false" />
+                <element signature="e#7221#7408#1" expanded="false" />
+                <element signature="e#7446#7819#0" expanded="false" />
+                <element signature="e#7446#7604#1" expanded="false" />
+                <element signature="e#7643#7689#0" expanded="false" />
+                <element signature="e#7728#7774#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -139,31 +154,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="prova_import_resources.csv" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/csv/prova_import_resources.csv">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="400" lean-forward="true" selection-start-line="1" selection-start-column="400" selection-end-line="1" selection-end-column="400" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Utilities.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controller/Utilities.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="prova_miniplans.csv" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/csv/prova_miniplans.csv">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="494" lean-forward="false" selection-start-line="7" selection-start-column="494" selection-end-line="7" selection-end-column="494" />
               <folding />
             </state>
           </provider>
@@ -226,8 +221,8 @@
         <option value="$PROJECT_DIR$/controller/Scheduler.py" />
         <option value="$PROJECT_DIR$/csv/prova_miniplans.csv" />
         <option value="$PROJECT_DIR$/model/Miniplan.py" />
-        <option value="$PROJECT_DIR$/model/Message.py" />
         <option value="$PROJECT_DIR$/controller/Json_manager.py" />
+        <option value="$PROJECT_DIR$/model/Message.py" />
         <option value="$PROJECT_DIR$/controller/engine_two.py" />
       </list>
     </option>
@@ -267,6 +262,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="city4ageV2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="city4ageV2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="city4ageV2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -624,7 +633,14 @@
       <option name="project" value="LOCAL" />
       <updated>1490791525611</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="engine two updates">
+      <created>1490972556325</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1490972556326</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -633,7 +649,7 @@
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942554" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33763188" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34466588" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -660,11 +676,12 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="engine two" />
-    <option name="LAST_COMMIT_MESSAGE" value="engine two" />
+    <MESSAGE value="engine two updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="engine two updates" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="81" />
+      <option name="time" value="82" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -958,22 +975,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/Miniplan.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="66" lean-forward="false" selection-start-line="5" selection-start-column="66" selection-end-line="5" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/Message.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="44" lean-forward="false" selection-start-line="20" selection-start-column="44" selection-end-line="20" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controller/GenerateMessageText.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -1042,44 +1043,61 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controller/Json_manager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="28" column="4" lean-forward="false" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="4" />
+        <state relative-caret-position="310">
+          <caret line="29" column="5" lean-forward="false" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
           <folding>
             <element signature="e#42#53#0" expanded="true" />
             <element signature="e#295#478#1" expanded="false" />
-            <element signature="e#1311#2285#0" expanded="false" />
-            <element signature="e#1311#1494#1" expanded="false" />
-            <element signature="e#2325#3189#0" expanded="false" />
-            <element signature="e#2325#2496#1" expanded="false" />
-            <element signature="e#2597#3170#0" expanded="false" />
-            <element signature="e#3231#3688#0" expanded="false" />
-            <element signature="e#3231#3402#1" expanded="false" />
-            <element signature="e#3725#4469#0" expanded="false" />
-            <element signature="e#3725#3932#1" expanded="false" />
-            <element signature="e#4506#5338#0" expanded="false" />
-            <element signature="e#4506#4713#1" expanded="false" />
-            <element signature="e#5372#6426#0" expanded="false" />
-            <element signature="e#5372#5501#1" expanded="false" />
-            <element signature="e#6463#7175#0" expanded="false" />
-            <element signature="e#7219#7415#0" expanded="false" />
-            <element signature="e#7219#7406#1" expanded="false" />
-            <element signature="e#7444#7817#0" expanded="false" />
-            <element signature="e#7444#7602#1" expanded="false" />
-            <element signature="e#7641#7687#0" expanded="false" />
-            <element signature="e#7726#7772#0" expanded="false" />
+            <element signature="e#1313#2287#0" expanded="false" />
+            <element signature="e#1313#1496#1" expanded="false" />
+            <element signature="e#2327#3191#0" expanded="false" />
+            <element signature="e#2327#2498#1" expanded="false" />
+            <element signature="e#2599#3172#0" expanded="false" />
+            <element signature="e#3233#3690#0" expanded="false" />
+            <element signature="e#3233#3404#1" expanded="false" />
+            <element signature="e#3727#4471#0" expanded="false" />
+            <element signature="e#3727#3934#1" expanded="false" />
+            <element signature="e#4508#5340#0" expanded="false" />
+            <element signature="e#4508#4715#1" expanded="false" />
+            <element signature="e#5374#6428#0" expanded="false" />
+            <element signature="e#5374#5503#1" expanded="false" />
+            <element signature="e#6465#7177#0" expanded="false" />
+            <element signature="e#7221#7417#0" expanded="false" />
+            <element signature="e#7221#7408#1" expanded="false" />
+            <element signature="e#7446#7819#0" expanded="false" />
+            <element signature="e#7446#7604#1" expanded="false" />
+            <element signature="e#7643#7689#0" expanded="false" />
+            <element signature="e#7728#7774#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/Miniplan.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="66" lean-forward="false" selection-start-line="5" selection-start-column="66" selection-end-line="5" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/Message.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="78" lean-forward="false" selection-start-line="7" selection-start-column="78" selection-end-line="7" selection-end-column="78" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controller/engine_two.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="173" column="5" lean-forward="false" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
+        <state relative-caret-position="357">
+          <caret line="158" column="21" lean-forward="false" selection-start-line="158" selection-start-column="21" selection-end-line="158" selection-end-column="21" />
           <folding>
             <element signature="e#43#64#0" expanded="true" />
-            <element signature="e#290#3371#0" expanded="false" />
-            <element signature="e#3430#3923#0" expanded="false" />
-            <element signature="e#3987#5364#0" expanded="false" />
+            <element signature="e#290#3692#0" expanded="false" />
+            <element signature="e#3751#4244#0" expanded="false" />
+            <element signature="e#4308#5685#0" expanded="false" />
+            <element signature="e#5728#6231#0" expanded="false" />
           </folding>
         </state>
       </provider>

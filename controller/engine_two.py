@@ -11,6 +11,14 @@ import math
 
 
 def checkMsgDay(messages):
+    '''
+    For every day schedules the messages to respect the following rules:
+    less than max_msgs_day messages per day
+    less than max_sam_resource messages per resource per day
+    not after expiration date of the message
+    :param messages: dict with all the messages of a user
+    :return: dict with the messages scheduled
+    '''
     max_msgs_day = 5
     max_same_resource = 2
     timezero = datetime.strptime('00:00:00', '%H:%M:%S').time()
@@ -38,7 +46,7 @@ def checkMsgDay(messages):
                 if c > max_same_resource and m.miniplan_id == mj.miniplan_id:
                     if day + timedelta(days=1) not in messages:
                         mj.date = datetime.combine(day + timedelta(days=1), timezero)
-                        messages[day + timedelta(days=1)].append(mj)
+                        messages[day + timedelta(days=1)] = [mj]
                         to_del.append(mj)
                     else:
                         mj.date = datetime.combine(day + timedelta(days=1), timezero)
@@ -85,15 +93,13 @@ def checkMsgDay(messages):
 
         messages[day] = checkMsgsPerHour(messages[day])
 
-    '''
     for m in messages:
         print 'day after ' + str(m)
         for mj in messages[m]:
-            # print str(mj.miniplan_id) + ' ' + str(mj.time)
+            print str(mj.miniplan_id) + ' ' + str(mj.time)
             print 'Dates: ' + str(mj.date) + ' ' + str(mj.expiration_date)
             print
         print
-    '''
 
 
 def checkMsgsPerHour(messages_same_day, pref=None):
@@ -151,10 +157,15 @@ def scheduleMessagesInDay(messages_same_day, pref=None):
 
 
 def rebuildMiniplans(all_messages):
+    '''
+    This function builds a dictionary with key=miniplan_id given a dictionary that has messages with different miniplan_id
+    :param all_messages: dict of messages
+    :return: dict of messages with key=miniplan_id
+    '''
     miniplans = {}
     for m in all_messages:
-        m.date=m.date.date()
-        m.time=m.time.time()
+        m.date = m.date.date()
+        m.time = m.time.time()
         if m.miniplan_id not in miniplans:
             miniplans[m.miniplan_id] = [m]
         else:
@@ -189,6 +200,6 @@ def launch_engine_two():
     miniplans = rebuildMiniplans(sorted_messages)
 
     for mini in miniplans:
-        encodeResponse(errors,miniplans[mini])
+        encodeResponse(errors, miniplans[mini])
 
-    #return encodePlan(errors, sorted_messages)
+        # return encodePlan(errors, sorted_messages)
