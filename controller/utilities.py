@@ -69,3 +69,20 @@ def checkMsgsOneDay(miniplan, endtime):
         c -= 1
 
     return miniplan
+
+
+def rebuildMiniplans(all_messages):
+    '''
+    This function builds a dictionary with key=miniplan_id given a dictionary that has messages with different miniplan_id
+    :param all_messages: dict of messages
+    :return: dict of messages with key=miniplan_id
+    '''
+    miniplans = {}
+    for m in all_messages:
+        m.date = m.date.date()
+        m.time = m.time.time()
+        if m.miniplan_id not in miniplans:
+            miniplans[m.miniplan_id] = [m]
+        else:
+            miniplans[m.miniplan_id].append(m)
+    return miniplans

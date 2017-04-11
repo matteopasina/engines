@@ -1,12 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import json
-from model.Request import Request
-from model.Template import Template
-from model.Resource import Resource
-from model.Message import Message
 from datetime import date, time, datetime
-import urllib2
+
+from model.Message import Message
+from model.Request import Request
+from model.Resource import Resource
 
 
 def encodeResponse(errors, miniplan):
@@ -61,7 +60,7 @@ def encodePlan(errors, plan):
                       separators=(',', ': '))
 
 
-def decodeRequest(request_json):
+def decodeRequestOld(request_json):
     '''
     Maps the request Json to Request class
     :param request_json: json sent by the user with the request
@@ -90,7 +89,7 @@ def decodeRequest(request_json):
     return request
 
 
-def decodeRequestv2(request_json):
+def decodeRequest(request_json):
     '''
     Maps the request Json to Request class
     :param request_json: json sent by the user with the request
@@ -101,43 +100,6 @@ def decodeRequestv2(request_json):
     request.to_date = datetime.strptime(request_json['to_date'], '%d %b %Y')
 
     return request
-
-
-def getTemplate(id_template):
-    '''
-    Makes a API call to get the details of a template having the id, fill a Template class and returns it
-    :param id_template: id of the template to retrieve
-    :return: template class filled
-    '''
-    json_template = json.load(urllib2.urlopen('https://api/c4a-DBmanager/getTemplate/id_template=' + id_template))
-    template = Template(id_template)
-    template.title = json_template['title']
-    template.category = json_template['category']
-    template.description = json_template['description']
-    template.nmsgmax = json_template['max_messages_number']
-    template.nmsgmin = json_template['min_messages_number']
-    template.period = json_template['period']
-    template.channels = json_template['channel']
-    return template
-
-
-def getResource(id_resource):
-    '''
-    Makes a API call to get the details of a resource having the id, fill a Resource class and returns it
-    :param id_resource: id of the resource to retrieve
-    :return: resource class filled
-    '''
-    json_resource = json.load(urllib2.urlopen('https://api/c4a-DBmanager/getResource/id_resource=' + id_resource))
-    resource = Resource(id_resource)
-    resource.url = json_resource['url']
-    resource.name = json_resource['resource_name']
-    resource.media = json_resource['media']
-    resource.language = json_resource['language']
-    resource.category = json_resource['category']
-    resource.description = json_resource['description']
-    resource.from_date = datetime.strptime(json_resource['from_date'], '%d %b %Y')
-    resource.to_date = datetime.strptime(json_resource['to_date'], '%d %b %Y')
-    return resource
 
 
 def mapResource(res_dict):
@@ -182,16 +144,6 @@ def mapMessage(message_dict):
     if message_dict['time'] != '':
         message.time = datetime.strptime(message_dict['time'], '%H:%M:%S')
     return message
-
-
-# TODO getUser
-def getUser(id_user):
-    '''
-    Makes a API call to get the details of a user having the id, fill a User class and returns it
-    :param id_user: id of the user to retrieve
-    :return: user class filled
-    '''
-    pass
 
 
 def json_serial(obj):

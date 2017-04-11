@@ -1,16 +1,9 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-import json, requests
-from datetime import datetime, timedelta
-from operator import attrgetter
-from controller.Json_manager import mapMessage, encodePlan, encodeResponse
-import random as rnd
-import csv
 import math
+import random as rnd
+from datetime import datetime, timedelta
 
 
-def checkMsgDay(messages):
+def controlMsgsDay(messages, max_msgs_day=5, max_same_resource=2):
     '''
     For every day schedules the messages to respect the following rules:
     less than max_msgs_day messages per day
@@ -19,8 +12,6 @@ def checkMsgDay(messages):
     :param messages: dict with all the messages of a user
     :return: dict with the messages scheduled
     '''
-    max_msgs_day = 5
-    max_same_resource = 2
     timezero = datetime.strptime('00:00:00', '%H:%M:%S').time()
 
     '''
@@ -91,7 +82,7 @@ def checkMsgDay(messages):
                     if len(messages[day]) <= max_msgs_day:
                         break
 
-        messages[day] = checkMsgsPerHour(messages[day])
+        messages[day] = controlMsgsPerHour(messages[day])
 
     for m in messages:
         print 'day after ' + str(m)
@@ -102,9 +93,10 @@ def checkMsgDay(messages):
         print
 
 
-def checkMsgsPerHour(messages_same_day, pref=None):
+def controlMsgsPerHour(messages_same_day, pref=None):
     '''
-    Schedules the messages in the same day to have at least one hour between them
+    If two messages have less than one hour between them calls scheduleMessagesInDay that equally distributes all the 
+    messages in the day, else let the times like they were
     :param messages_same_day: a list with the messages in the same day
     :return: the list with the updated times
     '''
@@ -154,52 +146,3 @@ def scheduleMessagesInDay(messages_same_day, pref=None):
         messages_same_day[i].time = datetime.combine(beginoftheworld.date(), messages_same_day[i].time)
 
     return messages_same_day
-
-
-def rebuildMiniplans(all_messages):
-    '''
-    This function builds a dictionary with key=miniplan_id given a dictionary that has messages with different miniplan_id
-    :param all_messages: dict of messages
-    :return: dict of messages with key=miniplan_id
-    '''
-    miniplans = {}
-    for m in all_messages:
-        m.date = m.date.date()
-        m.time = m.time.time()
-        if m.miniplan_id not in miniplans:
-            miniplans[m.miniplan_id] = [m]
-        else:
-            miniplans[m.miniplan_id].append(m)
-    return miniplans
-
-
-def launch_engine_two():
-    errors = {}
-    id_user = 0
-    all_messages = []
-    dict_m = {}
-    # miniplans = json.load(requests.get('http://..../endpoint/getAllProfileMiniplanFinalMessages/' + id_user))
-    with open('csv/prova_miniplans.csv') as csvmessages:
-        miniplans = csv.DictReader(csvmessages)
-        for m in miniplans:
-            for key, value in json.loads(m['miniplan_body']).iteritems():
-                mes = mapMessage(value)
-                mes.expiration_date = datetime.strptime(m['to_date'], '%Y-%m-%d').date()
-                all_messages.append(mes)
-
-    sorted_messages = sorted(all_messages, key=attrgetter('date', 'time'))
-
-    for m in sorted_messages:
-        if m.date.date() not in dict_m:
-            dict_m[m.date.date()] = [m]
-        else:
-            dict_m[m.date.date()].append(m)
-
-    checkMsgDay(dict_m)
-
-    miniplans = rebuildMiniplans(sorted_messages)
-
-    for mini in miniplans:
-        encodeResponse(errors, miniplans[mini])
-
-        # return encodePlan(errors, sorted_messages)

@@ -1,20 +1,22 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from model.Template import Template
-from model.User import User
-from controller import Scheduler
-from controller import Json_manager
-import datetime
-import urllib2
-import requests
 import csv
-import json
+
+from controller.get_data import *
+from controller.json_manager import decodeRequest, encodeResponse
+from controller.mini_planner import message_prescheduler
 
 
 def launch_engine_one(json_req):
     # prendo json request
-    # req = Json_manager.decodeRequest('{"resource_id": "In5","template_id":6,"user_id":7,"from_date":"22 Feb 2017","to_date":"10 Mar 2017"}')
-    req = Json_manager.decodeRequestv2(json_req)
+    # req = decodeRequest('{"resource_id": "In5","template_id":6,"user_id":7,"from_date":"22 Feb 2017","to_date":"10 Mar 2017"}')
+    req = decodeRequest(json_req)
+
+    '''
+    template=getTemplate(req.template_id)
+    resource=getResource(req.resource_id)
+    user=getUser(req.user_id)
+    '''
 
     # query al db con req.template_id
     template = Template(template_id=1,
@@ -40,18 +42,17 @@ def launch_engine_one(json_req):
         resources = csv.DictReader(csvmessages)
         for r in resources:
             if r['R_ID'] == req.resource_id:
-                resource = Json_manager.mapResource(r)
+                resource = json_manager.mapResource(r)
                 break
 
     '''Compose miniplan
     '''
-    print resource.periodic
     if resource.periodic == 'Yes':
-        response = Scheduler.schedulePeriodic(req, resource, template, user)
+        response = message_prescheduler.schedulePeriodic(req, resource, template, user)
     elif template.category == 'Eventi' or template.category == 'Opportunità':
-        response = Scheduler.scheduleLogarithmic(req, resource, template, user)
+        response = message_prescheduler.scheduleLogarithmic(req, resource, template, user)
     else:
-        response = Scheduler.scheduleEquallyDividedPeriod(req, resource, template, user)
+        response = message_prescheduler.scheduleEquallyDividedPeriod(req, resource, template, user)
 
     '''
     bozza api post 
@@ -64,4 +65,4 @@ def launch_engine_one(json_req):
 
     '''Encode response: builds json
     '''
-    return Json_manager.encodeResponse(response[0], response[1])
+    return encodeResponse(response[0], response[1])

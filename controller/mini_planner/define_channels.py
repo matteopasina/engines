@@ -4,7 +4,7 @@ import random as rnd
 from numpy.random.mtrand import choice
 
 
-def getChannelsAvailableTemplateUser(template, user):
+def getChannelsAvailable(template, user):
     '''
     Intersects the lists of channels available for passed user and template
     :param template: template class

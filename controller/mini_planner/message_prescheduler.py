@@ -4,14 +4,15 @@ import csv
 import random as rnd
 from datetime import datetime, timedelta
 
-from controller.ChannelManager import getChannelsAvailableTemplateUser, channelWithProbability
-from controller.GenerateMessageText import generate_message_text
-from controller.HourManager import scheduleHour, scheduleHourFromDate
-from controller.Utilities import mapDay, convertDatetime, checkMsgsOneDay
+from controller.define_channels import getChannelsAvailable, channelWithProbability
+
+from controller.mini_planner.engine_two_message_builder import generate_message_text
+from controller.mini_planner.hour_manager import scheduleHour, scheduleHourFromDate
+from controller.mini_planner.messages_selection import getListMessages
+from controller.utilities import mapDay, convertDatetime, checkMsgsOneDay
 from model.Message import Message
 
 
-# TODO API calls for almost every schedule function
 # OLD
 def scheduleRandom(request, resource, template, user):
     '''
@@ -36,7 +37,7 @@ def scheduleRandom(request, resource, template, user):
 
     miniplan = [Message(count) for count in xrange(nmsg)]
 
-    channel = getChannelsAvailableTemplateUser(template, user)
+    channel = getChannelsAvailable(template, user)
 
     for i in range(0, nmsg):
         step_send_msg = timedelta(seconds=rnd.randrange(0, valid_interval.total_seconds(), 3600))
@@ -78,7 +79,7 @@ def scheduleEquallyDivided(request, resource, template, user):
     # creates miniplan that is a list of messages
     miniplan = [Message(count) for count in xrange(nmsg)]
 
-    channel = getChannelsAvailableTemplateUser(template, user)
+    channel = getChannelsAvailable(template, user)
 
     # for nmsg fill the miniplan msgs
     date = endtime - timedelta(days=1)
@@ -131,7 +132,7 @@ def scheduleProgressive(request, resource, template, user, const_div_interval=2)
 
     miniplan = [Message(count) for count in xrange(nmsg)]
 
-    channels = getChannelsAvailableTemplateUser(template, user)
+    channels = getChannelsAvailable(template, user)
 
     valid_interval = timedelta(seconds=valid_interval.total_seconds() / const_div_interval)
     for i in range(0, nmsg):
@@ -209,7 +210,7 @@ def schedulePeriodProgressive(request, resource, template, user, const_div_inter
 
     miniplan = [Message(count) for count in xrange(nmsg)]
 
-    channels = getChannelsAvailableTemplateUser(template, user)
+    channels = getChannelsAvailable(template, user)
 
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
@@ -277,7 +278,7 @@ def scheduleEquallyDividedPeriod(request, resource, template, user):
     # creates miniplan that is a list of messages
     miniplan = [Message(count, user.user_id, intervention_session_id=1) for count in xrange(nmsg)]
 
-    channels = getChannelsAvailableTemplateUser(template, user)
+    channels = getChannelsAvailable(template, user)
 
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
@@ -354,7 +355,7 @@ def scheduleLogarithmic(request, resource, template, user):
     if valid_interval > period:
         valid_interval = period
 
-    channels = getChannelsAvailableTemplateUser(template, user)
+    channels = getChannelsAvailable(template, user)
 
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
@@ -429,7 +430,7 @@ def schedulePeriodic(request, resource, template, user):
 
     miniplan = [Message(count, user.user_id, intervention_session_id=1) for count in xrange(nmsg)]
 
-    channels = getChannelsAvailableTemplateUser(template, user)
+    channels = getChannelsAvailable(template, user)
 
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
@@ -476,40 +477,6 @@ def schedulePeriodic(request, resource, template, user):
     miniplan = checkMsgsOneDay(miniplan, endtime)
 
     return errors, miniplan
-
-
-def getListMessages(messages, nmsg, resource, channels):
-    '''
-    Check the messages to send for the resource -> id_resource, compose the list based on importance of a message
-    :param messages: dict of messages like sent by the api
-    :param nmsg: number of messages to send
-    :return: list with the messages to send
-    '''
-    comp_msgs = []
-    msgs = []
-    list_messages = []
-    for m in messages:
-        if m['Resource_ID'] == resource.resource_id:
-            if m['Compulsory'] == 'Yes' and m['Channel'] in channels:
-                comp_msgs.append(m)
-            elif m['Channel'] in channels:
-                msgs.append(m)
-
-    if len(comp_msgs)+len(msgs) < nmsg:
-        for c in comp_msgs:
-            list_messages.append(c)
-        for m in msgs:
-            list_messages.append(m)
-        return list_messages
-
-    else:
-        for i in range(0, nmsg):
-            if i < len(comp_msgs):
-                list_messages.insert(int(comp_msgs[i]['Message_ID'][-2:]), comp_msgs[i])
-            elif len(msgs) != 0:
-                list_messages.insert(int(msgs[i - len(comp_msgs) + 1]['Message_ID'][-2:]) - 1, msgs[i - len(comp_msgs) + 1])
-
-        return list_messages
 
 
 def checkForErrors(errors, endtime, expirationtime, startime, miniplan, nmsg, msgs_tosend_len):

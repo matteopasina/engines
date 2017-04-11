@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
 from flask import Flask, request
-from controller.engine_one import launch_engine_one
-from controller.engine_two import launch_engine_two
+
+from controller.mini_planner.engine_one_miniplanner import launch_engine_one
+from controller.planner.engine_three import launch_engine_two
+
 app = Flask(__name__)
 
 @app.route('/engine_one', methods=['GET', 'POST'])
