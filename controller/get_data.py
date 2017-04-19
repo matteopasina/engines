@@ -4,6 +4,7 @@ from datetime import datetime
 from model.Resource import Resource
 from model.Template import Template
 from model.Aged import Aged
+from model.ResourceMessage import ResourceMessage
 from controller.utilities import mapMessage
 
 
@@ -63,6 +64,28 @@ def getResource(id_resource):
 
     return resource
 
+def getResourceMessages(id_resource):
+    '''
+    Makes a API call to get the messages of a resource having the id, fill a list of ResourceMessage classes and returns it
+    :param id_resource: the id of the resource owner of the messages
+    :return: list of ResourceMessage of the desired resource
+    '''
+    messages=[]
+    json_messages_resource = requests.get('http://hoc3.elet.polimi.it:8080/c4aAPI/getResourceMessages/' + id_resource).json()[0]['Messages']
+    for m in json_messages_resource:
+        rm=ResourceMessage(m['message_id'])
+        rm.channels=m['channels']
+        rm.is_compulsory=m['is_compulsory']
+        rm.communication_style=m['communication_style']
+        rm.semantic_type=m['semantic_type']
+        rm.audio=m['audio']
+        rm.video=m['video']
+        rm.media=m['media']
+        rm.text=m['text']
+        rm.url=m['url']
+        messages.append(rm)
+
+    return messages
 
 # TODO fix hour preference
 def getAged(id_aged):

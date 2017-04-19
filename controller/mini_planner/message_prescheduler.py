@@ -6,10 +6,11 @@ import pendulum
 from pendulum import Period, Pendulum
 from datetime import datetime, timedelta
 
+from controller.get_data import getResourceMessages
 from controller.mini_planner.define_channels import getChannelsAvailable, channelWithProbability
 from controller.mini_planner.engine_two_message_builder import generate_message_text
 from controller.mini_planner.hour_manager import scheduleHour, scheduleHourFromDate
-from controller.mini_planner.message_selector import getListMessages
+from controller.mini_planner.message_selector import getListMessages, selectMessages
 from controller.utilities import mapDay, convertDatetime, checkMsgsOneDay, convertPendulum, checkMsgsOneDayPendulum
 from model.Message import Message
 
@@ -280,9 +281,16 @@ def scheduleEDPPendulum(request, resource, template, aged):
 
     channels = getChannelsAvailable(template, aged)
 
+    '''
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
         msgs_tosend = getListMessages(messages, nmsg, resource, channels)
+    '''
+
+    messages=getResourceMessages(resource.resource_id)
+    msgs_tosend = selectMessages(messages, nmsg, channels)
+
+
 
     er = checkForErrors(errors, endtime, None, startime, miniplan, nmsg, len(msgs_tosend))
     errors = er[0]
