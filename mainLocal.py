@@ -1,3 +1,5 @@
-from controller.planner.engine_three import launch_engine_two
+from controller import get_data
 
-launch_engine_two()
+t=get_data.getMiniplans('1')
+
+print t.nmsgmax

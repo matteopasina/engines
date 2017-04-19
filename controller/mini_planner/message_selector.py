@@ -27,6 +27,6 @@ def getListMessages(messages, nmsg, resource, channels):
             if i < len(comp_msgs):
                 list_messages.insert(int(comp_msgs[i]['Message_ID'][-2:]), comp_msgs[i])
             elif len(msgs) != 0:
-                list_messages.insert(int(msgs[i - len(comp_msgs) + 1]['Message_ID'][-2:]) - 1, msgs[i - len(comp_msgs) + 1])
+                list_messages.insert(int(msgs[i - len(comp_msgs)]['Message_ID'][-2:]) - 1, msgs[i - len(comp_msgs)])
 
         return list_messages

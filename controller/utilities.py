@@ -1,4 +1,8 @@
 from datetime import datetime, timedelta
+import pendulum
+
+from model.Message import Message
+from model.Resource import Resource
 
 
 def mapDay(on_day):
@@ -38,6 +42,25 @@ def convertDatetime(request, template, resource):
     return startime, endtime, period, expirationtime
 
 
+def convertPendulum(request, template, resource):
+    '''
+    Converts request.from request.to and template.period in pendulum
+    :param resource: a resource class
+    :param request: a request class
+    :param template: a template class
+    :return: 3 pendulum from from_date,to_date and period
+    '''
+    expirationtime = None
+    print type(request.from_date)
+    startime = pendulum.parse(request.from_date)
+    endtime = pendulum.parse(request.to_date)
+    if resource.to_date != None:
+        expirationtime = pendulum.parse(resource.to_date)
+    period = pendulum.Period(startime, startime.add(weeks=template.period))
+
+    return startime, endtime, period, expirationtime
+
+
 def shiftMiniplan(miniplan, shift):
     shift = timedelta(days=shift)
     for i in range(0, len(miniplan)):
@@ -71,6 +94,31 @@ def checkMsgsOneDay(miniplan, endtime):
     return miniplan
 
 
+def checkMsgsOneDayPendulum(miniplan, endtime):
+    '''
+    Pops the empty messages from the miniplan(if it has found <nmsg with getlistmessages)
+    :param miniplan: a miniplan(list of messages)
+    :param endtime: a Pendulum
+    :return: a miniplan(list of messages)
+    '''
+    c = 0
+    for i in range(0, len(miniplan)):
+        if miniplan[i].date == None:
+            c += 1
+
+        elif miniplan[i].date == miniplan[i - 1].date and miniplan[i].date == miniplan[i - 2].date:
+            miniplan[i].date = miniplan[i].date.add(days=1)
+            if miniplan[i].date > endtime.date():
+                miniplan[i].date = miniplan[i].date.subtract(days=1)
+                miniplan[i - 1].date = miniplan[i - 1].date.subtract(days=1)
+
+    while c > 0:
+        miniplan.pop()
+        c -= 1
+
+    return miniplan
+
+
 def rebuildMiniplans(all_messages):
     '''
     This function builds a dictionary with key=miniplan_id given a dictionary that has messages with different miniplan_id
@@ -86,3 +134,47 @@ def rebuildMiniplans(all_messages):
         else:
             miniplans[m.miniplan_id].append(m)
     return miniplans
+
+
+def mapMessage(message_dict):
+    message = Message(message_dict['message_id'], message_dict['user_id'], message_dict['intervention_session_id'])
+    message.URL = message_dict['URL']
+    message.attached_media = message_dict['attached_media']
+    message.attached_audio = message_dict['attached_audio']
+    message.channel = message_dict['channel']
+    message.message_text = message_dict['message_text']
+    message.miniplan_id = message_dict['miniplan_id']
+    message.pilot_id = message_dict['pilot_id']
+    if message_dict['date'] != '':
+        message.date = datetime.strptime(message_dict['date'], '%Y-%m-%d')
+    if message_dict['time'] != '':
+        message.time = datetime.strptime(message_dict['time'], '%H:%M:%S')
+    return message
+
+
+def mapResource(res_dict):
+    '''
+    Maps a resource dictionary to a resource class
+    :param res_dict: a resource dict
+    :return: a resource class
+    '''
+    resource = Resource(res_dict['R_ID'])
+    resource.url = res_dict['URL']
+    resource.name = res_dict['Resource_Name']
+    resource.media = res_dict['Media']
+    resource.language = res_dict['Language']
+    resource.category = res_dict['Category']
+    resource.description = res_dict['Description']
+    resource.subjects = res_dict['Subjects']
+    resource.has_messages = res_dict['Has_messages']
+    resource.partner = res_dict['Partner']
+    resource.periodic = res_dict['Periodic']
+    resource.translated = res_dict['Translated']
+    resource.on_day = res_dict['On_day']
+    resource.every = res_dict['Every']
+    resource.repeating_time = res_dict['Repeating_time']
+    if res_dict['From date'] != '':
+        resource.from_date = datetime.strptime(res_dict['From date'], '%d/%m/%Y')
+    if res_dict['To date'] != '':
+        resource.to_date = datetime.strptime(res_dict['To date'], '%d/%m/%Y')
+    return resource

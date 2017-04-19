@@ -50,7 +50,7 @@ def controlMsgsDay(messages, max_msgs_day=5, max_same_resource=2):
         if len(messages[day]) > max_msgs_day:
 
             for m in messages[day]:
-
+                #move the messages that are scheduled al least 2 days before their expiration date
                 if (m.expiration_date - day) > timedelta(days=2):
                     if day + timedelta(days=1) not in messages:
                         messages[day].remove(m)
@@ -65,7 +65,9 @@ def controlMsgsDay(messages, max_msgs_day=5, max_same_resource=2):
                 if len(messages[day]) <= max_msgs_day:
                     break
 
+            #if the previous condition is not enough move the messages with only one day of margin to the expiration date
             if len(messages[day]) > max_msgs_day:
+
                 for m in messages[day]:
 
                     if (m.expiration_date - day) > timedelta(days=1):
@@ -84,6 +86,7 @@ def controlMsgsDay(messages, max_msgs_day=5, max_same_resource=2):
 
         messages[day] = controlMsgsPerHour(messages[day])
 
+    '''
     for m in messages:
         print 'day after ' + str(m)
         for mj in messages[m]:
@@ -91,6 +94,7 @@ def controlMsgsDay(messages, max_msgs_day=5, max_same_resource=2):
             print 'Dates: ' + str(mj.date) + ' ' + str(mj.expiration_date)
             print
         print
+    '''
 
 
 def controlMsgsPerHour(messages_same_day, pref=None):

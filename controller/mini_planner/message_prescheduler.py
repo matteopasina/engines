@@ -2,14 +2,15 @@
 # -*- coding: utf-8 -*-
 import csv
 import random as rnd
+import pendulum
+from pendulum import Period, Pendulum
 from datetime import datetime, timedelta
 
-from controller.define_channels import getChannelsAvailable, channelWithProbability
-
+from controller.mini_planner.define_channels import getChannelsAvailable, channelWithProbability
 from controller.mini_planner.engine_two_message_builder import generate_message_text
 from controller.mini_planner.hour_manager import scheduleHour, scheduleHourFromDate
-from controller.mini_planner.messages_selection import getListMessages
-from controller.utilities import mapDay, convertDatetime, checkMsgsOneDay
+from controller.mini_planner.message_selector import getListMessages
+from controller.utilities import mapDay, convertDatetime, checkMsgsOneDay, convertPendulum, checkMsgsOneDayPendulum
 from model.Message import Message
 
 
@@ -244,12 +245,247 @@ def schedulePeriodProgressive(request, resource, template, user, const_div_inter
     return miniplan
 
 
-def scheduleEquallyDividedPeriod(request, resource, template, user):
+def scheduleEDPPendulum(request, resource, template, aged):
+    '''
+        Returns the miniplan with the temporal interval between the msgs divided equally with Pendulum
+        :param request: a request class
+        :param template: a template class
+        :param aged: a user class
+        :return: a miniplan that is a list of messages class with all the fields completed
+        '''
+    print "Schedule Day"
+    errors = {}
+
+    if type(request.from_date) is not Pendulum:
+        times = convertPendulum(request, template, resource)
+        startime = times[0]
+        endtime = times[1]
+        period = times[2]
+    else:
+        startime = request.from_date
+        endtime = request.to_date
+        period = pendulum.Period(startime, startime.add(weeks=template.period))
+
+    valid_interval = endtime - startime
+    if valid_interval > period:
+        valid_interval = period
+
+    if template.nmsgmin != template.nmsgmax:
+        nmsg = rnd.randrange(template.nmsgmin, template.nmsgmax + 1)
+    else:
+        nmsg = template.nmsgmax
+
+    # creates miniplan that is a list of messages
+    miniplan = [Message(count, aged.aged_id, intervention_session_id=1) for count in xrange(nmsg)]
+
+    channels = getChannelsAvailable(template, aged)
+
+    with open('csv/prova_import_messages.csv') as csvmessages:
+        messages = csv.DictReader(csvmessages)
+        msgs_tosend = getListMessages(messages, nmsg, resource, channels)
+
+    er = checkForErrors(errors, endtime, None, startime, miniplan, nmsg, len(msgs_tosend))
+    errors = er[0]
+    miniplan = er[1]
+    if er[2]:
+        endtime = er[3]
+    else:
+        return errors, miniplan
+
+    # length of the loop depending on the msgs found
+    if len(msgs_tosend) < nmsg:
+        lenloop = len(msgs_tosend)
+    else:
+        lenloop = nmsg
+
+    step_send_msg = valid_interval / lenloop
+
+    date = startime + (step_send_msg / 2)
+    for i in range(0, lenloop):
+        miniplan[i].date = date.date()
+        miniplan[i].time = scheduleHour(aged, None)
+        miniplan[i].message_text = generate_message_text(aged, msgs_tosend[i]['Text'], msgs_tosend[i]['URL'])
+        miniplan[i].attached_audio = msgs_tosend[i]['Audio']
+        miniplan[i].attached_media = msgs_tosend[i]['Media']
+        miniplan[i].URL = msgs_tosend[i]['URL']
+        miniplan[i].channel = msgs_tosend[i]['Channel']
+
+        date += step_send_msg
+
+    miniplan = checkMsgsOneDay(miniplan, endtime)
+
+    return errors, miniplan
+
+
+def scheduleLPendulum(request, resource, template, aged):
+    '''
+    Returns the miniplan scheduled with more frequency at the end of the interval
+    It divides the interval for every msg with logaritmic growth:1 1/2 1/3 1/4
+    Check on period(valid weeks): if request interval is larger that period then user period as interval
+    Last message always sent the day before the event
+    With Pendulum
+    :param request: a request class
+    :param template: a template class
+    :param aged: a user class
+    :return: a miniplan that is a list of messages class with all the fields completed
+    '''
+    print "Schedule Day"
+    errors = {}
+
+    if type(request.from_date) is not Pendulum:
+        times = convertPendulum(request, template, resource)
+        startime = times[0]
+        endtime = times[1]
+        period = times[2]
+        expirationtime = times[3]
+    else:
+        startime = request.from_date
+        endtime = request.to_date
+        period = pendulum.Period(startime, startime.add(weeks=template.period))
+        expirationtime = resource.to_date
+        if expirationtime == None:
+            expirationtime = endtime
+
+    if template.nmsgmin != template.nmsgmax:
+        nmsg = rnd.randrange(template.nmsgmin, template.nmsgmax + 1)
+    else:
+        nmsg = template.nmsgmax
+
+    miniplan = [Message(count, aged.aged_id, intervention_session_id=1) for count in xrange(nmsg)]
+
+    valid_interval = endtime - startime
+    if valid_interval > period:
+        valid_interval = period
+
+    channels = getChannelsAvailable(template, aged)
+
+    with open('csv/prova_import_messages.csv') as csvmessages:
+        messages = csv.DictReader(csvmessages)
+        msgs_tosend = getListMessages(messages, nmsg, resource, channels)
+
+    er = checkForErrors(errors, endtime, expirationtime, startime, miniplan, nmsg, len(msgs_tosend))
+    errors = er[0]
+    miniplan = er[1]
+    if er[2]:
+        endtime = er[3]
+    else:
+        return errors, miniplan
+
+    # length of the loop depending on the msgs found
+    if len(msgs_tosend) < nmsg:
+        lenloop = len(msgs_tosend)
+    else:
+        lenloop = nmsg
+
+    for i in range(0, lenloop):
+        date = endtime - valid_interval
+
+        miniplan[i].date = date.date()
+
+        miniplan[i].time = scheduleHourFromDate(aged, date).time()
+
+        '''
+        # messages = json.load(urllib2.urlopen('http://..../endpoint/getResource/' + request.resource_id))
+        '''
+
+        miniplan[i].message_text = generate_message_text(aged, msgs_tosend[i]['Text'], msgs_tosend[i]['URL'])
+
+        miniplan[i].attached_audio = msgs_tosend[i]['Audio']
+        miniplan[i].attached_media = msgs_tosend[i]['Media']
+        miniplan[i].URL = msgs_tosend[i]['URL']
+        miniplan[i].channel = msgs_tosend[i]['Channel']
+
+        valid_interval = valid_interval / (i + 2)
+
+    miniplan = checkMsgsOneDayPendulum(miniplan, endtime)
+
+    return errors, miniplan
+
+
+def schedulePPendulum(request, resource, template, aged):
+    print "Schedule Day"
+    errors = {}
+
+    if type(request.from_date) is not Pendulum:
+        times = convertPendulum(request, template, resource)
+        startime = times[0]
+        endtime = times[1]
+        period = times[2]
+        expirationtime = times[3]
+    else:
+        startime = request.from_date
+        endtime = request.to_date
+        period = pendulum.Period(startime, startime.add(weeks=template.period))
+        expirationtime = resource.to_date
+        if expirationtime == None:
+            expirationtime = endtime
+
+    valid_interval = endtime - startime
+    if valid_interval > period:
+        valid_interval = period
+
+    if template.nmsgmin != template.nmsgmax:
+        nmsg = rnd.randrange(template.nmsgmin, template.nmsgmax + 1)
+    else:
+        nmsg = template.nmsgmax
+
+    miniplan = [Message(count, aged.aged_id, intervention_session_id=1) for count in xrange(nmsg)]
+
+    channels = getChannelsAvailable(template, aged)
+
+    with open('csv/prova_import_messages.csv') as csvmessages:
+        messages = csv.DictReader(csvmessages)
+        msgs_tosend = getListMessages(messages, nmsg, resource, channels)
+
+    er = checkForErrors(errors, endtime, expirationtime, startime, miniplan, nmsg, len(msgs_tosend))
+    errors = er[0]
+    miniplan = er[1]
+    if er[2]:
+        endtime = er[3]
+    else:
+        return errors, miniplan
+
+    day_of_event = mapDay(resource.on_day)
+    if day_of_event == None:
+        errors['ErrorNoDay'] = 'Error no day specified for periodic messages'
+        miniplan = []
+        return errors, miniplan
+
+    # length of the loop depending on the msgs found
+    if len(msgs_tosend) < nmsg:
+        lenloop = len(msgs_tosend)
+    else:
+        lenloop = nmsg
+
+    c = 0
+    i = 0
+    for dt in valid_interval.range("days"):
+        if dt.day_of_week == day_of_event:
+            if c % int(resource.every) == 0:
+                if i > lenloop:
+                    break
+                miniplan[i].date = dt.date()
+                miniplan[i].time = scheduleHour(aged, None)
+                miniplan[i].attached_audio = msgs_tosend[i]['Audio']
+                miniplan[i].attached_media = msgs_tosend[i]['Media']
+                miniplan[i].URL = msgs_tosend[i]['URL']
+                miniplan[i].channel = msgs_tosend[i]['Channel']
+                miniplan[i].message_text = generate_message_text(aged, msgs_tosend[i]['Text'],
+                                                                 msgs_tosend[i]['URL'])
+                i += 1
+            c += 1
+
+    miniplan = checkMsgsOneDay(miniplan, endtime)
+
+    return errors, miniplan
+
+
+def scheduleEquallyDividedPeriod(request, resource, template, aged):
     '''
     Returns the miniplan with the temporal interval between the msgs divided equally
     :param request: a request class
     :param template: a template class
-    :param user: a user class
+    :param aged: a user class
     :return: a miniplan that is a list of messages class with all the fields completed
     '''
     print "Schedule Day"
@@ -276,9 +512,9 @@ def scheduleEquallyDividedPeriod(request, resource, template, user):
     step_send_msg = valid_interval / nmsg
 
     # creates miniplan that is a list of messages
-    miniplan = [Message(count, user.user_id, intervention_session_id=1) for count in xrange(nmsg)]
+    miniplan = [Message(count, aged.aged_id, intervention_session_id=1) for count in xrange(nmsg)]
 
-    channels = getChannelsAvailable(template, user)
+    channels = getChannelsAvailable(template, aged)
 
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
@@ -292,18 +528,18 @@ def scheduleEquallyDividedPeriod(request, resource, template, user):
     else:
         return errors, miniplan
 
-    #length of the loop depending on the msgs found
+    # length of the loop depending on the msgs found
     if len(msgs_tosend) < nmsg:
-        lenloop=len(msgs_tosend)
+        lenloop = len(msgs_tosend)
     else:
-        lenloop=nmsg
+        lenloop = nmsg
 
     # for nmsg fill the miniplan msgs
     date = startime
     for i in range(0, lenloop):
         miniplan[i].date = date.date()
-        miniplan[i].time = scheduleHour(user, None)
-        miniplan[i].message_text = generate_message_text(user, msgs_tosend[i]['Text'], msgs_tosend[i]['URL'])
+        miniplan[i].time = scheduleHour(aged, None)
+        miniplan[i].message_text = generate_message_text(aged, msgs_tosend[i]['Text'], msgs_tosend[i]['URL'])
         miniplan[i].attached_audio = msgs_tosend[i]['Audio']
         miniplan[i].attached_media = msgs_tosend[i]['Media']
         miniplan[i].URL = msgs_tosend[i]['URL']
@@ -316,7 +552,7 @@ def scheduleEquallyDividedPeriod(request, resource, template, user):
     return errors, miniplan
 
 
-def scheduleLogarithmic(request, resource, template, user):
+def scheduleLogarithmic(request, resource, template, aged):
     '''
     Returns the miniplan scheduled with more frequency at the end of the interval
     It divides the interval for every msg with logaritmic growth:1 1/2 1/3 1/4
@@ -324,7 +560,7 @@ def scheduleLogarithmic(request, resource, template, user):
     Last message always sent the day before the event
     :param request: a request class
     :param template: a template class
-    :param user: a user class
+    :param aged: a user class
     :return: a miniplan that is a list of messages class with all the fields completed
     '''
     print "Schedule Day"
@@ -349,13 +585,13 @@ def scheduleLogarithmic(request, resource, template, user):
     else:
         nmsg = template.nmsgmax
 
-    miniplan = [Message(count, user.user_id, intervention_session_id=1) for count in xrange(nmsg)]
+    miniplan = [Message(count, aged.aged_id, intervention_session_id=1) for count in xrange(nmsg)]
 
     valid_interval = endtime - startime
     if valid_interval > period:
         valid_interval = period
 
-    channels = getChannelsAvailable(template, user)
+    channels = getChannelsAvailable(template, aged)
 
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
@@ -369,11 +605,11 @@ def scheduleLogarithmic(request, resource, template, user):
     else:
         return errors, miniplan
 
-    #length of the loop depending on the msgs found
+    # length of the loop depending on the msgs found
     if len(msgs_tosend) < nmsg:
-        lenloop=len(msgs_tosend)
+        lenloop = len(msgs_tosend)
     else:
-        lenloop=nmsg
+        lenloop = nmsg
 
     valid_interval = timedelta(seconds=valid_interval.total_seconds())
     for i in range(0, lenloop):
@@ -381,13 +617,13 @@ def scheduleLogarithmic(request, resource, template, user):
 
         miniplan[i].date = date.date()
 
-        miniplan[i].time = scheduleHourFromDate(user, date).time()
+        miniplan[i].time = scheduleHourFromDate(aged, date).time()
 
         '''
         # messages = json.load(urllib2.urlopen('http://..../endpoint/getResource/' + request.resource_id))
         '''
 
-        miniplan[i].message_text = generate_message_text(user, msgs_tosend[i]['Text'], msgs_tosend[i]['URL'])
+        miniplan[i].message_text = generate_message_text(aged, msgs_tosend[i]['Text'], msgs_tosend[i]['URL'])
 
         miniplan[i].attached_audio = msgs_tosend[i]['Audio']
         miniplan[i].attached_media = msgs_tosend[i]['Media']
@@ -401,7 +637,7 @@ def scheduleLogarithmic(request, resource, template, user):
     return errors, miniplan
 
 
-def schedulePeriodic(request, resource, template, user):
+def schedulePeriodic(request, resource, template, aged):
     print "Schedule Day"
     errors = {}
 
@@ -428,9 +664,9 @@ def schedulePeriodic(request, resource, template, user):
     else:
         nmsg = template.nmsgmax
 
-    miniplan = [Message(count, user.user_id, intervention_session_id=1) for count in xrange(nmsg)]
+    miniplan = [Message(count, aged.aged_id, intervention_session_id=1) for count in xrange(nmsg)]
 
-    channels = getChannelsAvailable(template, user)
+    channels = getChannelsAvailable(template, aged)
 
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
@@ -450,29 +686,32 @@ def schedulePeriodic(request, resource, template, user):
         miniplan = []
         return errors, miniplan
 
-    #length of the loop depending on the msgs found
+    # length of the loop depending on the msgs found
     if len(msgs_tosend) < nmsg:
-        lenloop=len(msgs_tosend)
+        lenloop = len(msgs_tosend)
     else:
-        lenloop=nmsg
+        lenloop = nmsg
 
     c = 0
+    i = 0
     current_date = startime.date()
-    for i in range(0, lenloop):
-        while current_date < endtime.date():
-            if current_date.weekday() == day_of_event - 1:
-                if c % int(resource.every) == 0:
-                    miniplan[i].date = current_date
-                    miniplan[i].time = scheduleHour(user, None)
-                    miniplan[i].attached_audio = msgs_tosend[i]['Audio']
-                    miniplan[i].attached_media = msgs_tosend[i]['Media']
-                    miniplan[i].URL = msgs_tosend[i]['URL']
-                    miniplan[i].channel = msgs_tosend[i]['Channel']
-                    miniplan[i].message_text = generate_message_text(user, msgs_tosend[i]['Text'],
-                                                                     msgs_tosend[i]['URL'])
-                c += 1
+    while current_date < endtime.date():
+        if current_date.weekday() == day_of_event - 1:
+            if c % int(resource.every) == 0:
+                if i > lenloop:
+                    break
+                miniplan[i].date = current_date
+                miniplan[i].time = scheduleHour(aged, None)
+                miniplan[i].attached_audio = msgs_tosend[i]['Audio']
+                miniplan[i].attached_media = msgs_tosend[i]['Media']
+                miniplan[i].URL = msgs_tosend[i]['URL']
+                miniplan[i].channel = msgs_tosend[i]['Channel']
+                miniplan[i].message_text = generate_message_text(aged, msgs_tosend[i]['Text'],
+                                                                 msgs_tosend[i]['URL'])
+                i += 1
+            c += 1
 
-            current_date += timedelta(days=1)
+        current_date += timedelta(days=1)
 
     miniplan = checkMsgsOneDay(miniplan, endtime)
 
@@ -498,5 +737,3 @@ def checkForErrors(errors, endtime, expirationtime, startime, miniplan, nmsg, ms
         errors['ErrorLessMsg'] = 'Numero di messaggi compatibili trovati minore del numero di messaggi da mandare'
 
     return errors, miniplan, True, endtime
-
-

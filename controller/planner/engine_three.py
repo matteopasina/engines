@@ -6,12 +6,14 @@ import json
 from datetime import datetime
 from operator import attrgetter
 
-from controller.json_manager import mapMessage, encodeResponse
+from controller.json_manager import encodeResponse, encodePlan
 from controller.planner.controlConstraints import controlMsgsDay
-from controller.utilities import rebuildMiniplans
+from controller.utilities import rebuildMiniplans, mapMessage
+from controller.get_data import getMiniplans
 
 
-def launch_engine_two(id_user):
+def launch_engine_three(json_req):
+    id_user = json_req["user_id"]
     errors = {}
     all_messages = []
     dict_m = {}
@@ -23,6 +25,9 @@ def launch_engine_two(id_user):
                 mes = mapMessage(value)
                 mes.expiration_date = datetime.strptime(m['to_date'], '%Y-%m-%d').date()
                 all_messages.append(mes)
+
+    # will replace the above read from csv
+    # all_messages=getMiniplans(id_user)
 
     sorted_messages = sorted(all_messages, key=attrgetter('date', 'time'))
 
@@ -38,5 +43,12 @@ def launch_engine_two(id_user):
 
     for mini in miniplans:
         encodeResponse(errors, miniplans[mini])
+        '''
+            bozza api post 
+            data = {'commit_date': 'today', 'from_date': req.from_date, 'to_date': req.to_date,
+                    'resource_id': req.resource_id, 'template_id': req.template_id, 'intervention_id': 'int_id',
+                    'miniplan_body': miniplans[mini], caregiver_id='?'}
+            requests.post("http://.../endpoint/setNewMiniplanFinal/", params=data)
+        '''
 
-        # return encodePlan(errors, sorted_messages)
+    return encodePlan(errors, sorted_messages)

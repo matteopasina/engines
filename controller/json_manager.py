@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 import json
 from datetime import date, time, datetime
+import pendulum
 
-from model.Message import Message
 from model.Request import Request
-from model.Resource import Resource
 
 
 def encodeResponse(errors, miniplan):
@@ -77,7 +76,7 @@ def decodeRequestOld(request_json):
         if key == 'template_id':
             request.template_id = dict[key]
         if key == 'user_id':
-            request.user_id = dict[key]
+            request.aged_id = dict[key]
         if key == 'category':
             request.category = dict[key]
         if key == 'from_date':
@@ -95,56 +94,26 @@ def decodeRequest(request_json):
     :param request_json: json sent by the user with the request
     :return: request class with the info in the json
     '''
-    request = Request(1, request_json['resource_id'], request_json['template_id'], request_json['user_id'])
+    request = Request(1, request_json['resource_id'], request_json['template_id'], request_json['aged_id'])
     request.from_date = datetime.strptime(request_json['from_date'], '%d %b %Y')
     request.to_date = datetime.strptime(request_json['to_date'], '%d %b %Y')
 
     return request
 
-
-def mapResource(res_dict):
+def decodeRequestPendulum(request_json):
     '''
-    Maps a resource dictionary to a resource class
-    :param res_dict: a resource dict
-    :return: a resource class
+    Maps the request Json to Request class
+    :param request_json: json sent by the user with the request
+    :return: request class with the info in the json
     '''
-    resource = Resource(res_dict['R_ID'])
-    resource.url = res_dict['URL']
-    resource.name = res_dict['Resource_Name']
-    resource.media = res_dict['Media']
-    resource.language = res_dict['Language']
-    resource.category = res_dict['Category']
-    resource.description = res_dict['Description']
-    resource.subjects = res_dict['Subjects']
-    resource.has_messages = res_dict['Has_messages']
-    resource.partner = res_dict['Partner']
-    resource.periodic = res_dict['Periodic']
-    resource.translated = res_dict['Translated']
-    resource.on_day = res_dict['On_day']
-    resource.every = res_dict['Every']
-    resource.repeating_time = res_dict['Repeating_time']
-    if res_dict['From date'] != '':
-        resource.from_date = datetime.strptime(res_dict['From date'], '%d/%m/%Y')
-    if res_dict['To date'] != '':
-        resource.to_date = datetime.strptime(res_dict['To date'], '%d/%m/%Y')
-    return resource
+    request = Request(1, request_json['resource_id'], request_json['template_id'], request_json['aged_id'])
+    request.from_date = pendulum.parse(request_json['from_date'])
+    request.to_date = pendulum.parse(request_json['to_date'])
 
+    return request
 
-def mapMessage(message_dict):
-    message = Message(message_dict['message_id'], message_dict['user_id'], message_dict['intervention_session_id'])
-    message.URL = message_dict['URL']
-    message.attached_media = message_dict['attached_media']
-    message.attached_audio = message_dict['attached_audio']
-    message.channel = message_dict['channel']
-    message.message_text = message_dict['message_text']
-    message.miniplan_id = message_dict['miniplan_id']
-    message.pilot_id = message_dict['pilot_id']
-    if message_dict['date'] != '':
-        message.date = datetime.strptime(message_dict['date'], '%Y-%m-%d')
-    if message_dict['time'] != '':
-        message.time = datetime.strptime(message_dict['time'], '%H:%M:%S')
-    return message
-
+def decodeFlowchart(flowchart):
+    pass
 
 def json_serial(obj):
     '''
