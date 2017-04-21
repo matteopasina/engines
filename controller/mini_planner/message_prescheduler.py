@@ -271,7 +271,7 @@ def scheduleEDPPendulum(request, resource, template, aged):
     if valid_interval > period:
         valid_interval = period
 
-    if template.nmsgmin != template.nmsgmax:
+    if template.nmsgmin != template.nmsgmax and template.nmsgmax > template.nmsgmin:
         nmsg = rnd.randrange(template.nmsgmin, template.nmsgmax + 1)
     else:
         nmsg = template.nmsgmax

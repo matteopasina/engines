@@ -13,6 +13,8 @@ def getChannelsAvailable(template, user):
     '''
     # channels = json.load(urllib2.urlopen('https://api/c4a-DBmanager/getUser_Channel/id_user=' + user.user_id))
     # return [validChannel for validChannel in channels if validChannel in template.channels]
+    if user.channels is None or template.channels is None:
+        return []
     return [validChannel for validChannel in user.channels if validChannel in template.channels]
 
 

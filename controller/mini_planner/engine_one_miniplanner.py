@@ -71,8 +71,8 @@ def launch_engine_one_Pendulum(json_req):
     template=getTemplate(req.template_id)
     resource=getResource(req.resource_id)
     aged=getAged(req.aged_id)
-    '''
 
+    '''
     # query al db con req.template_id
     template = Template(template_id=1,
                         category="Eventi",
@@ -106,15 +106,6 @@ def launch_engine_one_Pendulum(json_req):
     else:
         response = message_prescheduler.scheduleEDPPendulum(req, resource, template, aged)
 
+    '''Encode response: builds json and posts miniplan
     '''
-    bozza api post 
-    data = {'generation_date': 'today', 'from_date': req.from_date, 'to_date': req.to_date,
-            'resource_id': req.resource_id, 'template_id': req.template_id, 'intervention_id': 'int_id',
-            'miniplan_body': 'json'}
-    requests.post("http://.../endpoint/setNewMiniplanGenerated/", params=data)
-    '''
-
-
-    '''Encode response: builds json
-    '''
-    return encodeResponse(response[0], response[1])
+    return encodeResponse(response[0], response[1], req)

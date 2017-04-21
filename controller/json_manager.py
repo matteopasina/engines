@@ -4,10 +4,11 @@ import json
 from datetime import date, time, datetime
 import pendulum
 
+from controller.post_data import postMiniplanGenerated
 from model.Request import Request
 
 
-def encodeResponse(errors, miniplan):
+def encodeResponse(errors, miniplan, req):
     '''
     Composes the Json to send back with all the information computed
     :param miniplan: the list of Message classes to send
@@ -24,10 +25,13 @@ def encodeResponse(errors, miniplan):
                 json_message[key] = value
         miniplan_message[message.message_id] = json_message
 
-    #print json.dumps({'Errors': errors}, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
-    #print json.dumps({'Miniplan': miniplan_message}, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
+    # print json.dumps({'Errors': errors}, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
+    # print json.dumps({'Miniplan': miniplan_message}, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
     json_response['Errors'] = errors
     json_response['Miniplan'] = miniplan_message
+
+    postMiniplanGenerated(miniplan_message,req)
+
     return json.dumps({'Response': json_response}, default=json_serial, sort_keys=True, indent=4,
                       separators=(',', ': '))
 
@@ -100,6 +104,7 @@ def decodeRequest(request_json):
 
     return request
 
+
 def decodeRequestPendulum(request_json):
     '''
     Maps the request Json to Request class
@@ -112,8 +117,10 @@ def decodeRequestPendulum(request_json):
 
     return request
 
+
 def decodeFlowchart(flowchart):
     pass
+
 
 def json_serial(obj):
     '''
