@@ -15,236 +15,125 @@ from controller.utilities import mapDay, convertDatetime, checkMsgsOneDay, conve
 from model.Message import Message
 
 
-# OLD
-def scheduleRandom(request, resource, template, user):
-    '''
-    Returns the miniplan scheduled with random times
-    :param request: a request class
-    :param template: a template class
-    :param user: a user class
-    :return: a miniplan that is a list of messages class with all the fields completed
-    '''
-    print "Schedule Day"
+def schedule(request, resource, template, aged):
+    errors = {}
 
-    times = convertDatetime(request, template)
-    startime = times[0]
-    endtime = times[1]
-    period = times[2]
+    if type(request.from_date) is not Pendulum:
+        times = convertPendulum(request, template, resource)
+        startime = times[0]
+        endtime = times[1]
+        period = times[2]
+        expirationtime = times[3]
+    else:
+        startime = request.from_date
+        endtime = request.to_date
+        period = pendulum.Period(startime, startime.add(weeks=template.period))
+        expirationtime = resource.to_date
+        if expirationtime == None:
+            expirationtime = endtime
 
-    valid_interval = endtime - startime
-    if template.nmsgmin != template.nmsgmax:
+    if template.nmsgmin != template.nmsgmax and template.nmsgmax > template.nmsgmin:
         nmsg = rnd.randrange(template.nmsgmin, template.nmsgmax + 1)
     else:
         nmsg = template.nmsgmax
-
-    miniplan = [Message(count) for count in xrange(nmsg)]
-
-    channel = getChannelsAvailable(template, user)
-
-    for i in range(0, nmsg):
-        step_send_msg = timedelta(seconds=rnd.randrange(0, valid_interval.total_seconds(), 3600))
-        miniplan[i].date = startime + step_send_msg
-        miniplan[i].time = scheduleHourFromDate(user, miniplan[i].date).time()
-        miniplan[i].channel = channel
-
-        print miniplan[i].date, miniplan[i].channel, miniplan[i].time
-
-    return miniplan
-
-
-# OLD
-def scheduleEquallyDivided(request, resource, template, user):
-    '''
-    Returns the miniplan with the temporal interval between the msgs divided equally
-    WARN: It does not consider period
-    :param request: a request class
-    :param template: a template class
-    :param user: a user class
-    :return: a miniplan that is a list of messages class with all the fields completed
-    '''
-    print "Schedule Day"
-
-    # convert to datetime the times
-    times = convertDatetime(request, template)
-    startime = times[0]
-    endtime = times[1]
-
-    # compute the day step to send the msgs
-    valid_interval = endtime - startime
-    if template.nmsgmin != template.nmsgmax:
-        nmsg = rnd.randrange(template.nmsgmin, template.nmsgmax + 1)
-    else:
-        nmsg = template.nmsgmax
-    step_send_msg = valid_interval / nmsg
-    print str(step_send_msg) + "\n"
 
     # creates miniplan that is a list of messages
-    miniplan = [Message(count) for count in xrange(nmsg)]
+    miniplan = [Message(count, aged.aged_id, intervention_session_id=1) for count in xrange(nmsg)]
 
-    channel = getChannelsAvailable(template, user)
-
-    # for nmsg fill the miniplan msgs
-    date = endtime - timedelta(days=1)
-    for i in range(0, nmsg):
-        miniplan[i].date = date
-        miniplan[i].time = scheduleHour(user, None)
-        miniplan[i].channel = channel
-        miniplan[i].message_text = generate_message_text(user,
-                                                         main_text='Sapevi che il ballo migliora la coordinazione, '
-                                                                   'ha effetti positivi sulla circolazione sanguigna '
-                                                                   'e favorisce la socializzazione? È veramente il modo '
-                                                                   'perfetto per tenersi in forma divertendosi :) '
-                                                                   'Provalo sulla tua pelle: Il 22 settembre al '
-                                                                   'Teatro Paisiello di Lecce avrà inizio la '
-                                                                   'nuova edizione di Slowtango, una giornata interamente '
-                                                                   'dedicata a questo stile di danza così affascinante. '
-                                                                   'Non mancare, siamo sicuri che ti divertirai un mondo!')
-
-        date -= step_send_msg
-        print miniplan[i].date, miniplan[i].channel, miniplan[i].time
-
-    return miniplan
-
-
-# OLD
-def scheduleProgressive(request, resource, template, user, const_div_interval=2):
-    '''
-    Returns the miniplan scheduled with more frequency at the end of the interval
-    It divides the interval for every msg by const_div_interval e.g. if =2 -> :1 1/2 1/4 1/8
-    WARN: It does not consider period
-    Last message always sent the day before the event
-    :param request: a request class
-    :param template: a template class
-    :param user: a user class
-    :param const_div_interval: const that divides for every cicle the time interval to send the msgs
-    :return: a miniplan that is a list of messages class with all the fields completed
-    '''
-    print "Schedule Day"
-
-    times = convertDatetime(request, template)
-    startime = times[0]
-    endtime = times[1]
-    period = times[2]
-
-    valid_interval = endtime - startime
-    if template.nmsgmin != template.nmsgmax:
-        nmsg = rnd.randrange(template.nmsgmin, template.nmsgmax + 1)
-    else:
-        nmsg = template.nmsgmax
-
-    miniplan = [Message(count) for count in xrange(nmsg)]
-
-    channels = getChannelsAvailable(template, user)
-
-    valid_interval = timedelta(seconds=valid_interval.total_seconds() / const_div_interval)
-    for i in range(0, nmsg):
-        date = endtime - valid_interval
-        valid_interval = timedelta(seconds=valid_interval.total_seconds() / const_div_interval)
-
-        miniplan[i].date = date.date()
-
-        miniplan[i].time = scheduleHourFromDate(user, date).time()
-
-        miniplan[i].channel = channelWithProbability(channels)
-
-        # messages = json.load(urllib2.urlopen('https://api/c4a-DBmanager/getResource_messages/id_resource=' + request.resource+'&channels='))
-
-        miniplan[i].message_text = generate_message_text(user,
-                                                         main_text='Sapevi che il ballo migliora la coordinazione, '
-                                                                   'ha effetti positivi sulla circolazione sanguigna '
-                                                                   'e favorisce la socializzazione? È veramente il modo '
-                                                                   'perfetto per tenersi in forma divertendosi :) '
-                                                                   'Provalo sulla tua pelle: Il 22 settembre al '
-                                                                   'Teatro Paisiello di Lecce avrà inizio la '
-                                                                   'nuova edizione di Slowtango, una giornata interamente '
-                                                                   'dedicata a questo stile di danza così affascinante. '
-                                                                   'Non mancare, siamo sicuri che ti divertirai un mondo!')
-
-        print miniplan[i].date, miniplan[i].channel, miniplan[i].time
-
-    if (endtime - timedelta(days=1)).date() != miniplan[-1].date:
-        miniplan[-1].date = (endtime - timedelta(days=1)).date()
-        print miniplan[i].date, miniplan[i].channel, miniplan[i].time
-
-    return miniplan
-
-
-# OLD
-def schedulePeriodProgressive(request, resource, template, user, const_div_interval=2):
-    '''
-    Returns the miniplan scheduled with more frequency at the end of the interval
-    It divides the interval for every msg by const_div_interval e.g. if =2 -> :1 1/2 1/4 1/8
-    Last message always sent the day before the event
-    :param request: a request class
-    :param template: a template class
-    :param user: a user class
-    :param const_div_interval: const that divides for every cicle the time interval to send the msgs
-    :return: a miniplan that is a list of messages class with all the fields completed
-    '''
-    print "Schedule Day"
-
-    times = convertDatetime(request, template)
-    startime = times[0]
-    endtime = times[1]
-    period = times[2]
+    channels = getChannelsAvailable(template, aged)
 
     '''
-    Check if the dates passed by the user and the dates of the resource are compatible
-    json_resource = json.load(urllib2.urlopen('https://api/c4a-DBmanager/getResource/id_resource=' + request.resource_id))
-    resource=Resource(json_resource['id_resource'])
-    resource.from_date = datetime.strptime(json_resource['From'], '%d %b %Y')
-    resource.to_date = datetime.strptime(json_resource['To'], '%d %b %Y')
-
-    if endtime > resource.to_date:
-        endtime = resource.to_date
-    if startime > resource.to_date:
-        miniplan=[]
-        return miniplan
-    '''
-
-    valid_interval = endtime - startime
-    if valid_interval > period:
-        valid_interval = period
-    if template.nmsgmin != template.nmsgmax:
-        nmsg = rnd.randrange(template.nmsgmin, template.nmsgmax + 1)
-    else:
-        nmsg = template.nmsgmax
-
-    miniplan = [Message(count) for count in xrange(nmsg)]
-
-    channels = getChannelsAvailable(template, user)
-
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
         msgs_tosend = getListMessages(messages, nmsg, resource, channels)
+    '''
 
-    valid_interval = timedelta(seconds=valid_interval.total_seconds() / (const_div_interval / 2))
-    for i in range(0, nmsg):
-        date = endtime - valid_interval
-        valid_interval = timedelta(seconds=valid_interval.total_seconds() / const_div_interval)
+    messages = getResourceMessages(resource.resource_id)
+    msgs_tosend = selectMessages(messages, nmsg, channels)
 
-        miniplan[i].date = date.date()
+    er = checkForErrors(errors, endtime, None, startime, miniplan, nmsg, len(msgs_tosend))
+    errors = er[0]
+    miniplan = er[1]
+    if er[2]:
+        endtime = er[3]
+    else:
+        return errors, miniplan
 
-        miniplan[i].time = scheduleHourFromDate(user, date).time()
+    # length of the loop depending on the msgs found
+    if len(msgs_tosend) < nmsg:
+        lenloop = len(msgs_tosend)
+    else:
+        lenloop = nmsg
 
-        # messages = json.load(urllib2.urlopen('https://api/c4a-DBmanager/getResource_messages/id_resource=' + request.resource+'&channels='))
-        # main_text = rnd.choice(messages)
-
-        miniplan[i].message_text = generate_message_text(user,
-                                                         main_text=msgs_tosend[i]['Text'])
+    for i in range(0, lenloop):
+        miniplan[i].message_text = generate_message_text(aged, msgs_tosend[i]['Text'], msgs_tosend[i]['URL'])
         miniplan[i].attached_audio = msgs_tosend[i]['Audio']
         miniplan[i].attached_media = msgs_tosend[i]['Media']
         miniplan[i].URL = msgs_tosend[i]['URL']
         miniplan[i].channel = msgs_tosend[i]['Channel']
 
-        print miniplan[i].date, miniplan[i].channel, miniplan[i].time
+    miniplan = ED(miniplan, lenloop, startime, endtime, period, aged)
 
-    if (endtime - timedelta(days=1)).date() != miniplan[-1].date:
-        miniplan[-1].date = (endtime - timedelta(days=1)).date()
-        print miniplan[i].date, miniplan[i].channel, miniplan[i].time
+    miniplan = checkMsgsOneDay(miniplan, endtime)
+
+    return errors, miniplan
+
+
+def ED(miniplan, lenloop, startime, endtime, period, aged):
+    valid_interval = endtime - startime
+    if valid_interval > period:
+        valid_interval = period
+
+    step_send_msg = valid_interval / lenloop
+
+    date = startime + (step_send_msg / 2)
+    for i in range(0, lenloop):
+        miniplan[i].date = date.date()
+        miniplan[i].time = scheduleHour(aged, None)
+        date += step_send_msg
+    return miniplan
+
+
+def L(miniplan, lenloop, startime, endtime, period, aged):
+    valid_interval = endtime - startime
+    if valid_interval > period:
+        valid_interval = period
+
+    for i in range(0, lenloop):
+        date = endtime - valid_interval
+        miniplan[i].date = date.date()
+        miniplan[i].time = scheduleHourFromDate(aged, date).time()
+        valid_interval = valid_interval / (i + 2)
 
     return miniplan
 
+#TODO think how to make this work
+'''
+def P(miniplan, lenloop, startime, endtime, period, aged):
+    valid_interval = endtime - startime
+    if valid_interval > period:
+        valid_interval = period
+
+    day_of_event = mapDay(resource.on_day)
+    if day_of_event == None:
+        errors['ErrorNoDay'] = 'Error no day specified for periodic messages'
+        miniplan = []
+        return errors, miniplan
+    
+    c = 0
+    i = 0
+    for dt in valid_interval.range("days"):
+        if dt.day_of_week == day_of_event:
+            if c % int(resource.every) == 0:
+                if i > lenloop:
+                    break
+                miniplan[i].date = dt.date()
+                miniplan[i].time = scheduleHour(aged, None)
+                i += 1
+            c += 1
+    
+    return miniplan
+'''
 
 def scheduleEDPPendulum(request, resource, template, aged):
     '''
@@ -254,7 +143,6 @@ def scheduleEDPPendulum(request, resource, template, aged):
         :param aged: a user class
         :return: a miniplan that is a list of messages class with all the fields completed
         '''
-    print "Schedule Day"
     errors = {}
 
     if type(request.from_date) is not Pendulum:
@@ -287,10 +175,8 @@ def scheduleEDPPendulum(request, resource, template, aged):
         msgs_tosend = getListMessages(messages, nmsg, resource, channels)
     '''
 
-    messages=getResourceMessages(resource.resource_id)
+    messages = getResourceMessages(resource.resource_id)
     msgs_tosend = selectMessages(messages, nmsg, channels)
-
-
 
     er = checkForErrors(errors, endtime, None, startime, miniplan, nmsg, len(msgs_tosend))
     errors = er[0]
@@ -317,8 +203,12 @@ def scheduleEDPPendulum(request, resource, template, aged):
         miniplan[i].attached_media = msgs_tosend[i]['Media']
         miniplan[i].URL = msgs_tosend[i]['URL']
         miniplan[i].channel = msgs_tosend[i]['Channel']
+        miniplan[i].time_1=date.date()
+        miniplan[i].time_2=date.add(days=1).date()
 
         date += step_send_msg
+
+    miniplan = ED(miniplan, lenloop, startime, step_send_msg, aged)
 
     miniplan = checkMsgsOneDay(miniplan, endtime)
 
@@ -337,7 +227,6 @@ def scheduleLPendulum(request, resource, template, aged):
     :param aged: a user class
     :return: a miniplan that is a list of messages class with all the fields completed
     '''
-    print "Schedule Day"
     errors = {}
 
     if type(request.from_date) is not Pendulum:
@@ -389,12 +278,10 @@ def scheduleLPendulum(request, resource, template, aged):
         date = endtime - valid_interval
 
         miniplan[i].date = date.date()
+        miniplan[i].time_1=date.date()
+        miniplan[i].time_2=date.add(days=1).date()
 
         miniplan[i].time = scheduleHourFromDate(aged, date).time()
-
-        '''
-        # messages = json.load(urllib2.urlopen('http://..../endpoint/getResource/' + request.resource_id))
-        '''
 
         miniplan[i].message_text = generate_message_text(aged, msgs_tosend[i]['Text'], msgs_tosend[i]['URL'])
 
@@ -411,7 +298,6 @@ def scheduleLPendulum(request, resource, template, aged):
 
 
 def schedulePPendulum(request, resource, template, aged):
-    print "Schedule Day"
     errors = {}
 
     if type(request.from_date) is not Pendulum:
@@ -473,6 +359,8 @@ def schedulePPendulum(request, resource, template, aged):
                 if i > lenloop:
                     break
                 miniplan[i].date = dt.date()
+                miniplan[i].time_1 = dt.date()
+                miniplan[i].time_2 = dt.subtract(days=1).date()
                 miniplan[i].time = scheduleHour(aged, None)
                 miniplan[i].attached_audio = msgs_tosend[i]['Audio']
                 miniplan[i].attached_media = msgs_tosend[i]['Media']

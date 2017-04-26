@@ -7,6 +7,8 @@ from controller.json_manager import decodeRequest, encodeResponse, decodeRequest
 from controller.utilities import mapResource
 from controller.mini_planner import message_prescheduler
 
+from model.Aged import Aged
+
 
 def launch_engine_one(json_req):
     # prendo json request
@@ -30,7 +32,7 @@ def launch_engine_one(json_req):
                         channels=["SMS", "Messenger"])
 
     # query al db con req.user_id
-    user = User(user_id=1,
+    user = Aged(aged_id=1,
                 name="Anselmo",
                 channels=["WhatsApp", "SMS", "Messenger"],
                 hour_preference='0')
@@ -67,11 +69,10 @@ def launch_engine_one(json_req):
 def launch_engine_one_Pendulum(json_req):
     req = decodeRequestPendulum(json_req)
 
-
+    '''
     template=getTemplate(req.template_id)
     resource=getResource(req.resource_id)
     aged=getAged(req.aged_id)
-
     '''
     # query al db con req.template_id
     template = Template(template_id=1,
@@ -84,7 +85,7 @@ def launch_engine_one_Pendulum(json_req):
                         channels=["SMS", "Messenger"])
 
     # query al db con req.user_id
-    aged = User(user_id=1,
+    aged = Aged(aged_id=1,
                 name="Anselmo",
                 channels=["WhatsApp", "SMS", "Messenger"],
                 hour_preference='0')
@@ -95,7 +96,7 @@ def launch_engine_one_Pendulum(json_req):
             if r['R_ID'] == req.resource_id:
                 resource = mapResource(r)
                 break
-    '''
+
 
     '''Compose miniplan
     '''

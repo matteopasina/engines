@@ -3,6 +3,7 @@
 
 import csv
 import json
+import requests
 from datetime import datetime
 from operator import attrgetter
 
@@ -17,7 +18,9 @@ def launch_engine_three(json_req):
     errors = {}
     all_messages = []
     dict_m = {}
-    # miniplans = requests.get('http://..../endpoint/getAllProfileMiniplanFinalMessages/',id_user)
+
+    #miniplans = requests.get('http://..../endpoint/getAllProfileMiniplanFinalMessages/',id_user)
+
     with open('csv/prova_miniplans.csv') as csvmessages:
         miniplans = csv.DictReader(csvmessages)
         for m in miniplans:
@@ -44,11 +47,10 @@ def launch_engine_three(json_req):
     for mini in miniplans:
         encodeResponse(errors, miniplans[mini])
         '''
-            bozza api post 
-            data = {'commit_date': 'today', 'from_date': req.from_date, 'to_date': req.to_date,
-                    'resource_id': req.resource_id, 'template_id': req.template_id, 'intervention_id': 'int_id',
-                    'miniplan_body': miniplans[mini], caregiver_id='?'}
-            requests.post("http://.../endpoint/setNewMiniplanFinal/", params=data)
+        params = {'commit_date': 'today', 'from_date': miniplans[mini].from_date, 'to_date': miniplans[mini].to_date,
+                  'resource_id': miniplans[mini].resource_id, 'template_id': miniplans[mini].template_id, 'intervention_id': 1,
+                  'miniplan_body': miniplans[mini], 'caregiver_id': '?'}
+        requests.post("http://hoc3.elet.polimi.it:8080/c4aAPI/setNewMiniplanFinal/", data=params)
         '''
 
     return encodePlan(errors, sorted_messages)

@@ -14,8 +14,7 @@ def getTemplate(id_template):
     :param id_template: id of the template to retrieve
     :return: template class filled
     '''
-    json_template = requests.get('http://hoc3.elet.polimi.it:8080/c4aAPI/getTemplate/' + id_template).json()[0][
-        'Template']
+    json_template = requests.get('http://hoc3.elet.polimi.it:8080/c4aAPI/getTemplate/' + id_template).json()[0]['Template']
 
     template = Template(id_template)
     template.title = json_template['title']

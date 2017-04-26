@@ -8,7 +8,7 @@ from controller.post_data import postMiniplanGenerated
 from model.Request import Request
 
 
-def encodeResponse(errors, miniplan, req):
+def encodeResponse(errors, miniplan, req=None):
     '''
     Composes the Json to send back with all the information computed
     :param miniplan: the list of Message classes to send
@@ -30,7 +30,7 @@ def encodeResponse(errors, miniplan, req):
     json_response['Errors'] = errors
     json_response['Miniplan'] = miniplan_message
 
-    postMiniplanGenerated(miniplan_message,req)
+#    postMiniplanGenerated(miniplan_message,req)
 
     return json.dumps({'Response': json_response}, default=json_serial, sort_keys=True, indent=4,
                       separators=(',', ': '))
@@ -117,7 +117,7 @@ def decodeRequestPendulum(request_json):
 
     return request
 
-
+#TODO
 def decodeFlowchart(flowchart):
     pass
 
