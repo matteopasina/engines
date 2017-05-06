@@ -41,7 +41,6 @@ def selectMessages(messages, nmsg, channels):
     for m in messages:
         if m.is_compulsory == 'Yes' and m.channels[0]['channel_name'] in channels:
             comp_msgs.append(m)
-            print 'in'
         elif m.channels[0]['channel_name'] in channels:
             msgs.append(m)
 

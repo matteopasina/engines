@@ -1,4 +1,5 @@
 import requests
+import pendulum
 from datetime import datetime
 
 from model.Resource import Resource
@@ -14,7 +15,20 @@ def getTemplate(id_template):
     :param id_template: id of the template to retrieve
     :return: template class filled
     '''
-    json_template = requests.get('http://hoc3.elet.polimi.it:8080/c4aAPI/getTemplate/' + id_template).json()[0]['Template']
+    cfg=open('controller/config.cfg','r')
+    for line in cfg:
+        words=line.split(' ')
+        if words[0] == 'ApiPath:':
+            apipath=words[1]
+
+    cfg.close()
+
+    json_template = requests.get(apipath+'getTemplate/' + id_template).json()[0]
+
+    if 'Template' in json_template:
+        json_template=json_template['Template']
+    else:
+        return None
 
     template = Template(id_template)
     template.title = json_template['title']
@@ -23,10 +37,11 @@ def getTemplate(id_template):
     template.nmsgmax = json_template['max_number_messages']
     template.nmsgmin = json_template['min_number_messages']
     template.period = json_template['period']
-    template.channels = json_template['channels']
     template.addressed_to = json_template['addressed_to']
     template.flowchart = json_template['flowchart']
     template.compulsory = json_template['compulsory']
+    for c in json_template['channels']:
+        template.channels.append(c['channel_name'])
 
     return template
 
@@ -37,8 +52,20 @@ def getResource(id_resource):
     :param id_resource: id of the resource to retrieve
     :return: resource class filled
     '''
-    json_resource = requests.get('http://hoc3.elet.polimi.it:8080/c4aAPI/getResource/' + id_resource).json()[0][
-        'Resource']
+    cfg = open('controller/config.cfg', 'r')
+    for line in cfg:
+        words = line.split(' ')
+        if words[0] == 'ApiPath:':
+            apipath = words[1]
+
+    cfg.close()
+
+    json_resource = requests.get(apipath+'getResource/' + id_resource).json()[0]
+
+    if 'Resource' in json_resource:
+        json_resource=json_resource['Resource']
+    else:
+        return None
 
     resource = Resource(id_resource)
     resource.url = json_resource['url']
@@ -57,9 +84,9 @@ def getResource(id_resource):
 
     # check dates are strings
     if isinstance(json_resource['from_date'], basestring):
-        resource.from_date = datetime.strptime(json_resource['from_date'], '%d %b %Y')
+        resource.from_date = pendulum.parse(json_resource['from_date'])
     if isinstance(json_resource['to_date'], basestring):
-        resource.to_date = datetime.strptime(json_resource['to_date'], '%d %b %Y')
+        resource.to_date = pendulum.parse(json_resource['to_date'])
 
     return resource
 
@@ -69,8 +96,22 @@ def getResourceMessages(id_resource):
     :param id_resource: the id of the resource owner of the messages
     :return: list of ResourceMessage of the desired resource
     '''
+    cfg = open('controller/config.cfg', 'r')
+    for line in cfg:
+        words = line.split(' ')
+        if words[0] == 'ApiPath:':
+            apipath = words[1]
+
+    cfg.close()
+
     messages=[]
-    json_messages_resource = requests.get('http://hoc3.elet.polimi.it:8080/c4aAPI/getResourceMessages/' + id_resource).json()[0]['Messages']
+    json_messages_resource = requests.get(apipath+'getResourceMessages/' + id_resource).json()[0]
+
+    if 'Messages' in json_messages_resource:
+        json_messages_resource=json_messages_resource['Messages']
+    else:
+        return None
+
     for m in json_messages_resource:
         rm=ResourceMessage(m['message_id'])
         rm.channels=m['channels']
@@ -93,15 +134,34 @@ def getAged(id_aged):
     :param id_user: id of the user to retrieve
     :return: user class filled
     '''
-    json_aged = requests.get('http://hoc3.elet.polimi.it:8080/c4aAPI/getProfile/' + id_aged).json()[0]['Profile']
+
+    cfg = open('controller/config.cfg', 'r')
+    for line in cfg:
+        words = line.split(' ')
+        if words[0] == 'ApiPath:':
+            apipath = words[1]
+
+    cfg.close()
+
+    json_aged = requests.get(apipath+'getProfile/' + id_aged).json()[0]
+
+    if 'Profile' in json_aged:
+        json_aged=json_aged['Profile']
+    else:
+        return None
 
     aged = Aged(id_aged)
     aged.name = json_aged['name']
     aged.surname = json_aged['surname']
 
     json_communicative = \
-    requests.get('http://hoc3.elet.polimi.it:8080/c4aAPI/getProfileCommunicativeDetails/' + id_aged).json()[0][
-        'Profile']
+    requests.get(apipath+'getProfileCommunicativeDetails/' + id_aged).json()[0]
+
+    if 'Profile' in json_communicative:
+        json_communicative=json_communicative['Profile']
+    else:
+        return None
+
     aged.channels = json_communicative['available_channels'].split(', ')
     aged.message_frequency = json_communicative['message_frequency']
     aged.topics = json_communicative['topics'].split(', ')
@@ -115,9 +175,18 @@ def getAged(id_aged):
 
 # TODO fix define(populate) miniplans in DB
 def getMiniplans(id_user):
+    cfg = open('controller/config.cfg', 'r')
+    for line in cfg:
+        words = line.split(' ')
+        if words[0] == 'ApiPath:':
+            apipath = words[1]
+
+    cfg.close()
+
     all_messages = []
-    miniplans = \
-    requests.get('http://hoc3.elet.polimi.it:8080/c4aAPI/getAllProfileMiniplanFinalMessages/' + id_user).json()[0][
+    miniplans = []
+
+    requests.get(apipath+'getAllProfileMiniplanFinalMessages/' + id_user).json()[0][
         'Final Messages']
     for m in miniplans:
         print m

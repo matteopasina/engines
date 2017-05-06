@@ -3,6 +3,8 @@ import pendulum
 
 from model.Message import Message
 from model.Resource import Resource
+from model.Template import Template
+from model.Aged import Aged
 
 
 def mapDay(on_day):
@@ -178,3 +180,34 @@ def mapResource(res_dict):
     if res_dict['To date'] != '':
         resource.to_date = datetime.strptime(res_dict['To date'], '%d/%m/%Y')
     return resource
+
+def mapTemplate(temp_dict):
+    '''
+    Maps a template dictionary to a template class
+    :param temp_dict: a template dict
+    :return: a template class
+    '''
+    template = Template(temp_dict['ID'])
+    template.category = temp_dict['Categoria']
+    template.title = temp_dict['Titolo del template']
+    template.description = temp_dict['Descrizione']
+    template.nmsgmin = int(temp_dict['Numero di messaggi (min)'])
+    template.nmsgmax = int(temp_dict['Numero di messaggi (max)'])
+    template.period = float(temp_dict['Durata (settimane)'])
+    template.channels = temp_dict['Canale'].split(', ')
+    return template
+
+def mapProfile(aged_dict):
+    '''
+    Maps a aged dictionary to a aged class
+    :param aged_dict: a aged dict
+    :return: a aged class
+    '''
+    aged = Aged(int(aged_dict['ID']))
+    aged.name = aged_dict['name']
+    aged.channels = aged_dict['channels'].split(', ')
+    if aged_dict['hour_preference'] == 'None':
+        aged.hour_preference = None
+    else:
+        aged.hour_preference = aged_dict['hour_preference']
+    return aged

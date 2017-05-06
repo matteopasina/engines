@@ -4,7 +4,7 @@ import csv
 
 from controller.get_data import *
 from controller.json_manager import decodeRequest, encodeResponse, decodeRequestPendulum
-from controller.utilities import mapResource
+from controller.utilities import mapResource, mapTemplate, mapProfile
 from controller.mini_planner import message_prescheduler
 
 from model.Aged import Aged
@@ -67,42 +67,70 @@ def launch_engine_one(json_req):
     return encodeResponse(response[0], response[1])
 
 def launch_engine_one_Pendulum(json_req):
+    response=[{},{}]
     req = decodeRequestPendulum(json_req)
+    template=None
+    aged=None
+    resource=None
 
-    '''
     template=getTemplate(req.template_id)
+    if template is None:
+        response[0]={'Error': 'Template not found'}
+        response[1]={}
+        return encodeResponse(response[0], response[1], req)
+
     resource=getResource(req.resource_id)
+    if resource is None:
+        response[0] = {'Error': 'Resource not found'}
+        response[1] = {}
+        return encodeResponse(response[0], response[1], req)
+
     aged=getAged(req.aged_id)
+    if aged is None:
+        response[0] = {'Error': 'Aged not found'}
+        response[1] = {}
+        return encodeResponse(response[0], response[1], req)
+
     '''
-    # query al db con req.template_id
-    template = Template(template_id=1,
-                        category="Eventi",
-                        title="Titolo",
-                        description="Descrizione molto bella",
-                        nmsgmin=3,
-                        nmsgmax=3,
-                        period=15,
-                        channels=["SMS", "Messenger"])
+    with open('csv/prova_templates.csv') as csvTemplates:
+        templates = csv.DictReader(csvTemplates)
+        for t in templates:
+            if t['ID'] == req.template_id:
+                template = mapTemplate(t)
+                break
+        if template is None:
+            response[0] = {'Error': 'Template not found'}
+            response[1] = {}
+            return encodeResponse(response[0], response[1], req)
 
-    # query al db con req.user_id
-    aged = Aged(aged_id=1,
-                name="Anselmo",
-                channels=["WhatsApp", "SMS", "Messenger"],
-                hour_preference='0')
+    with open('csv/prova_profiles.csv') as csvProfiles:
+        profiles = csv.DictReader(csvProfiles)
+        for p in profiles:
+            if p['ID'] == req.aged_id:
+                aged = mapProfile(p)
+                break
+        if aged is None:
+            response[0] = {'Error': 'Aged not found'}
+            response[1] = {}
+            return encodeResponse(response[0], response[1], req)
 
-    with open('csv/prova_import_resources.csv') as csvmessages:
-        resources = csv.DictReader(csvmessages)
+    with open('csv/prova_import_resources.csv') as csvResources:
+        resources = csv.DictReader(csvResources)
         for r in resources:
             if r['R_ID'] == req.resource_id:
                 resource = mapResource(r)
                 break
-
+        if resource is None:
+            response[0] = {'Error': 'Resource not found'}
+            response[1] = {}
+            return encodeResponse(response[0], response[1], req)
+    '''
 
     '''Compose miniplan
     '''
     if resource.periodic == 'Yes':
         response = message_prescheduler.schedulePPendulum(req, resource, template, aged)
-    elif template.category == 'Eventi' or template.category == 'Opportunità':
+    elif template.category == 'Events' or template.category == 'Opportunità':
         response = message_prescheduler.scheduleLPendulum(req, resource, template, aged)
     else:
         response = message_prescheduler.scheduleEDPPendulum(req, resource, template, aged)

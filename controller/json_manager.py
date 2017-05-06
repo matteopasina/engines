@@ -1,10 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import json
+import uuid
 from datetime import date, time, datetime
 import pendulum
 
-from controller.post_data import postMiniplanGenerated
+from controller.post_data import postMiniplanGenerated, postMiniplanFinal
 from model.Request import Request
 
 
@@ -30,7 +31,8 @@ def encodeResponse(errors, miniplan, req=None):
     json_response['Errors'] = errors
     json_response['Miniplan'] = miniplan_message
 
-#    postMiniplanGenerated(miniplan_message,req)
+    #postMiniplanFinal(miniplan,miniplan_message, req)
+    postMiniplanGenerated(miniplan_message,req)
 
     return json.dumps({'Response': json_response}, default=json_serial, sort_keys=True, indent=4,
                       separators=(',', ': '))
@@ -111,7 +113,7 @@ def decodeRequestPendulum(request_json):
     :param request_json: json sent by the user with the request
     :return: request class with the info in the json
     '''
-    request = Request(1, request_json['resource_id'], request_json['template_id'], request_json['aged_id'])
+    request = Request(1,request_json['pilot_id'],request_json['intervention_session_id'], request_json['resource_id'],request_json['template_id'], request_json['aged_id'])
     request.from_date = pendulum.parse(request_json['from_date'])
     request.to_date = pendulum.parse(request_json['to_date'])
 
@@ -134,4 +136,6 @@ def json_serial(obj):
     if isinstance(obj, time):
         serial = obj.isoformat()
         return serial
+    if isinstance(obj,uuid.UUID):
+        return str(obj)
     raise TypeError("Type not serializable")
