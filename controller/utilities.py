@@ -211,3 +211,13 @@ def mapProfile(aged_dict):
     else:
         aged.hour_preference = aged_dict['hour_preference']
     return aged
+
+def getApipath():
+    cfg = open('controller/config.cfg', 'r')
+    for line in cfg:
+        words = line.split(' ')
+        if words[0] == 'ApiPath:':
+            apipath = words[1]
+
+    cfg.close()
+    return apipath

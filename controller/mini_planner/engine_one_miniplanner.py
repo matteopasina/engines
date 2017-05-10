@@ -130,7 +130,7 @@ def launch_engine_one_Pendulum(json_req):
     '''
     if resource.periodic == 'Yes':
         response = message_prescheduler.schedulePPendulum(req, resource, template, aged)
-    elif template.category == 'Events' or template.category == 'Opportunità':
+    elif template.category == 'Events' or template.category == 'Opportunities':
         response = message_prescheduler.scheduleLPendulum(req, resource, template, aged)
     else:
         response = message_prescheduler.scheduleEDPPendulum(req, resource, template, aged)

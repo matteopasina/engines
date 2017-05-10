@@ -6,7 +6,7 @@ from model.Resource import Resource
 from model.Template import Template
 from model.Aged import Aged
 from model.ResourceMessage import ResourceMessage
-from controller.utilities import mapMessage
+from controller.utilities import getApipath
 
 
 def getTemplate(id_template):
@@ -15,15 +15,8 @@ def getTemplate(id_template):
     :param id_template: id of the template to retrieve
     :return: template class filled
     '''
-    cfg=open('controller/config.cfg','r')
-    for line in cfg:
-        words=line.split(' ')
-        if words[0] == 'ApiPath:':
-            apipath=words[1]
 
-    cfg.close()
-
-    json_template = requests.get(apipath+'getTemplate/' + id_template).json()[0]
+    json_template = requests.get(getApipath()+'getTemplate/' + id_template).json()[0]
 
     if 'Template' in json_template:
         json_template=json_template['Template']
@@ -52,15 +45,8 @@ def getResource(id_resource):
     :param id_resource: id of the resource to retrieve
     :return: resource class filled
     '''
-    cfg = open('controller/config.cfg', 'r')
-    for line in cfg:
-        words = line.split(' ')
-        if words[0] == 'ApiPath:':
-            apipath = words[1]
 
-    cfg.close()
-
-    json_resource = requests.get(apipath+'getResource/' + id_resource).json()[0]
+    json_resource = requests.get(getApipath()+'getResource/' + id_resource).json()[0]
 
     if 'Resource' in json_resource:
         json_resource=json_resource['Resource']
@@ -96,16 +82,9 @@ def getResourceMessages(id_resource):
     :param id_resource: the id of the resource owner of the messages
     :return: list of ResourceMessage of the desired resource
     '''
-    cfg = open('controller/config.cfg', 'r')
-    for line in cfg:
-        words = line.split(' ')
-        if words[0] == 'ApiPath:':
-            apipath = words[1]
-
-    cfg.close()
 
     messages=[]
-    json_messages_resource = requests.get(apipath+'getResourceMessages/' + id_resource).json()[0]
+    json_messages_resource = requests.get(getApipath()+'getResourceMessages/' + id_resource).json()[0]
 
     if 'Messages' in json_messages_resource:
         json_messages_resource=json_messages_resource['Messages']
@@ -135,15 +114,7 @@ def getAged(id_aged):
     :return: user class filled
     '''
 
-    cfg = open('controller/config.cfg', 'r')
-    for line in cfg:
-        words = line.split(' ')
-        if words[0] == 'ApiPath:':
-            apipath = words[1]
-
-    cfg.close()
-
-    json_aged = requests.get(apipath+'getProfile/' + id_aged).json()[0]
+    json_aged = requests.get(getApipath()+'getProfile/' + id_aged).json()[0]
 
     if 'Profile' in json_aged:
         json_aged=json_aged['Profile']
@@ -155,7 +126,7 @@ def getAged(id_aged):
     aged.surname = json_aged['surname']
 
     json_communicative = \
-    requests.get(apipath+'getProfileCommunicativeDetails/' + id_aged).json()[0]
+    requests.get(getApipath()+'getProfileCommunicativeDetails/' + id_aged).json()[0]
 
     if 'Profile' in json_communicative:
         json_communicative=json_communicative['Profile']
@@ -175,18 +146,11 @@ def getAged(id_aged):
 
 # TODO fix define(populate) miniplans in DB
 def getMiniplans(id_user):
-    cfg = open('controller/config.cfg', 'r')
-    for line in cfg:
-        words = line.split(' ')
-        if words[0] == 'ApiPath:':
-            apipath = words[1]
-
-    cfg.close()
 
     all_messages = []
     miniplans = []
 
-    requests.get(apipath+'getAllProfileMiniplanFinalMessages/' + id_user).json()[0][
+    requests.get(getApipath()+'getAllProfileMiniplanFinalMessages/' + id_user).json()[0][
         'Final Messages']
     for m in miniplans:
         print m
