@@ -2,15 +2,11 @@
 
 from flask import Flask, request
 
-from controller.mini_planner.engine_one_miniplanner import launch_engine_one,launch_engine_one_Pendulum
+from controller.mini_planner.engine_one_miniplanner import launch_engine_one_Pendulum
 from controller.planner.engine_three import launch_engine_three
 
 app = Flask(__name__)
-'''
-@app.route('/engine_one', methods=['GET', 'POST'])
-def e1():
-    return launch_engine_one(request.get_json())
-'''
+
 
 @app.route('/engine_one', methods=['GET', 'POST'])
 def e1():

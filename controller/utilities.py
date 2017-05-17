@@ -129,8 +129,8 @@ def rebuildMiniplans(all_messages):
     '''
     miniplans = {}
     for m in all_messages:
-        m.date = m.date.date()
-        m.time = m.time.time()
+        m.date = m.date
+        m.time = m.time
         if m.miniplan_id not in miniplans:
             miniplans[m.miniplan_id] = [m]
         else:
@@ -217,7 +217,17 @@ def getApipath():
     for line in cfg:
         words = line.split(' ')
         if words[0] == 'ApiPath:':
-            apipath = words[1]
+            apipath = words[1].rstrip('\n')
 
     cfg.close()
     return apipath
+
+def getDeliverypath():
+    cfg = open('controller/config.cfg', 'r')
+    for line in cfg:
+        words = line.split(' ')
+        if words[0] == 'DeliveryPath:':
+            deliverypath = words[1].rstrip('\n')
+
+    cfg.close()
+    return deliverypath

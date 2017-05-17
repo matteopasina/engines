@@ -1,5 +1,6 @@
 import requests
 import pendulum
+import json
 from datetime import datetime
 
 from model.Resource import Resource
@@ -7,6 +8,7 @@ from model.Template import Template
 from model.Aged import Aged
 from model.ResourceMessage import ResourceMessage
 from controller.utilities import getApipath
+from controller.json_manager import decodeMessage
 
 
 def getTemplate(id_template):
@@ -133,10 +135,29 @@ def getAged(id_aged):
     else:
         return None
 
-    aged.channels = json_communicative['available_channels'].split(', ')
+    aged.channels = []
+    for c in json_communicative['available_channels'].split(', '):
+        if c == 'FB':
+            aged.channels.append('Facebook')
+        else:
+            aged.channels.append(c)
     aged.message_frequency = json_communicative['message_frequency']
     aged.topics = json_communicative['topics'].split(', ')
     aged.communication_style = json_communicative['communication_style']
+
+    json_tech = requests.get(getApipath() + 'getProfileTechnicalDetails/' + id_aged).json()[0]
+
+    if 'Profile' in json_tech:
+        json_tech = json_tech['Profile']
+    else:
+        return None
+
+    aged.address = json_tech['address']
+    aged.telephone_home_number = json_tech['telephone_home_number']
+    aged.mobile_phone_number = json_tech['mobile_phone_number']
+    aged.email=json_tech['email']
+    aged.facebook=json_tech['facebook_account']
+    aged.telegram=json_tech['telegram_account']
 
     # json_hourPref = requests.get('http://hoc3.elet.polimi.it:8080/c4aAPI/getProfileHourPreferences/' + id_aged).json()
     # aged.hour_preference = json_hourPref[0]['Preferences']['hour_period_id']
@@ -144,20 +165,14 @@ def getAged(id_aged):
     return aged
 
 
-# TODO fix define(populate) miniplans in DB
-def getMiniplans(id_user):
+# TODO fix getMiniplanMessagesCommitted
+def getMessages(id_user):
 
     all_messages = []
-    miniplans = []
 
-    requests.get(getApipath()+'getAllProfileMiniplanFinalMessages/' + id_user).json()[0][
-        'Final Messages']
-    for m in miniplans:
-        print m
-    '''
-        for key, value in json.loads(m['miniplan_body']).iteritems():
-            mes = mapMessage(value)
-            mes.expiration_date = datetime.strptime(m['to_date'], '%Y-%m-%d').date()
-            all_messages.append(mes)
+    messages=requests.get(getApipath()+'getMiniplanGeneratedMessages/' + id_user).json()[0]['Messages']
+
+    for m in messages:
+        all_messages.append(decodeMessage(json.loads(m['message_body'])))
+
     return all_messages
-    '''

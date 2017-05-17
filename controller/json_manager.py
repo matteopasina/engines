@@ -7,9 +7,8 @@ import pendulum
 
 from controller.post_data import postMiniplanGenerated, postGeneratedMessage
 from model.Request import Request
+from model.Message import Message
 
-
-#TODO fix miniplanid in response
 def encodeResponse(errors, miniplan, req=None):
     '''
     Composes the Json to send back with all the information computed
@@ -35,20 +34,19 @@ def encodeResponse(errors, miniplan, req=None):
     json_response['Errors'] = errors
     json_response['Miniplan'] = miniplan_message
 
-    #postMiniplanFinal(miniplan,miniplan_message, req)
+    if req is not None:
+        jsonToPost=json.dumps(miniplan_message, default=json_serial, sort_keys=True, indent=4,separators=(',', ': '))
 
-    jsonToPost=json.dumps(miniplan_message, default=json_serial, sort_keys=True, indent=4,separators=(',', ': '))
+        miniplan_id=postMiniplanGenerated(jsonToPost,req)
 
-    miniplan_id=postMiniplanGenerated(jsonToPost,req)
+        for msgs in miniplan_message:
+            miniplan_message[msgs]['miniplan_id']=miniplan_id
 
-    for msgs in miniplan_message:
-        miniplan_message[msgs]['miniplan_id']=miniplan_id
-
-    for m in miniplan:
-        m.miniplan_id=miniplan_id
-        mdict=encodeMessage(m)
-        jsonMToPost = json.dumps(mdict, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
-        postGeneratedMessage(m,jsonMToPost)
+        for m in miniplan:
+            m.miniplan_id=miniplan_id
+            mdict=encodeMessage(m)
+            jsonMToPost = json.dumps(mdict, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
+            postGeneratedMessage(m,jsonMToPost)
 
     return json.dumps({'Response': json_response}, default=json_serial, sort_keys=True, indent=4,
                       separators=(',', ': '))
@@ -98,6 +96,22 @@ def encodeMessage(message):
     dict['message_text']=message.message_text.replace("'", " ")
     dict['URL']=message.URL
     return dict
+
+def decodeMessage(dict):
+    message = Message(dict['message_id'], dict['user_id'],dict['intervention_session_id'])
+    message.miniplan_id=dict['miniplan_id']
+    message.pilot_id=dict['pilot_id']
+    message.time_2=dict['time_2']
+    message.time_1=dict['time_1']
+    message.time=dict['time']
+    message.channel=dict['channel']
+    message.date=dict['date']
+    message.expiration_date=dict['expiration_date']
+    message.attached_audio=dict['attached_audio']
+    message.attached_media=dict['attached_media']
+    message.message_text=dict['message_text']
+    message.URL=dict['URL']
+    return message
 
 def decodeRequestOld(request_json):
     '''
