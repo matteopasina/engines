@@ -1,19 +1,19 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import csv
-import uuid
 import random as rnd
-import pendulum
-from pendulum import Period, Pendulum
+import uuid
 from datetime import datetime, timedelta
 
+import pendulum
+from pendulum import Pendulum
+
 from controller.get_data import getResourceMessages
-from controller.mini_planner.define_channels import getChannelsAvailable, channelWithProbability
+from controller.mini_planner.define_channels import getChannelsAvailable
 from controller.mini_planner.engine_two_message_builder import generate_message_text, buildMessage
 from controller.mini_planner.hour_manager import scheduleHour, scheduleHourFromDate
 from controller.mini_planner.message_selector import getListMessages, selectMessages
 from controller.utilities import mapDay, convertDatetime, checkMsgsOneDay, convertPendulum, checkMsgsOneDayPendulum
-from controller.post_data import postFinalMessage
 from model.Message import Message
 
 
@@ -109,7 +109,8 @@ def L(miniplan, lenloop, startime, endtime, period, aged):
 
     return miniplan
 
-#TODO think how to make this work
+
+# TODO think how to make this work
 '''
 def P(miniplan, lenloop, startime, endtime, period, aged):
     valid_interval = endtime - startime
@@ -137,6 +138,7 @@ def P(miniplan, lenloop, startime, endtime, period, aged):
     return miniplan
 '''
 
+
 def scheduleEDPPendulum(request, resource, template, aged):
     '''
         Returns the miniplan with the temporal interval between the msgs divided equally with Pendulum
@@ -160,7 +162,8 @@ def scheduleEDPPendulum(request, resource, template, aged):
 
     valid_interval = endtime - startime
     if valid_interval > period:
-        errors['Interval changed']='Duration of the template('+str(period)+') less than interval set by the care giver'
+        errors['Interval changed'] = 'Duration of the template(' + str(
+            period) + ') less than interval set by the care giver'
         valid_interval = period
 
     if template.nmsgmin != template.nmsgmax and template.nmsgmax > template.nmsgmin:
@@ -172,7 +175,6 @@ def scheduleEDPPendulum(request, resource, template, aged):
     miniplan = [Message(count, aged.aged_id, intervention_session_id=1) for count in xrange(nmsg)]
 
     channels = getChannelsAvailable(template, aged)
-
 
     '''
     with open('csv/prova_import_messages.csv') as csvmessages:
@@ -206,7 +208,7 @@ def scheduleEDPPendulum(request, resource, template, aged):
 
     date = startime + (step_send_msg / 2)
     for i in range(0, lenloop):
-        miniplan[i].miniplan_id=miniplanID
+        miniplan[i].miniplan_id = miniplanID
         miniplan[i].date = date.date()
         miniplan[i].time = scheduleHour(aged, None)
         miniplan[i].message_text = buildMessage(aged, msgs_tosend[i])
@@ -214,10 +216,10 @@ def scheduleEDPPendulum(request, resource, template, aged):
         miniplan[i].attached_media = msgs_tosend[i].media
         miniplan[i].URL = msgs_tosend[i].url
         miniplan[i].channel = msgs_tosend[i].channels[0]['channel_name']
-        miniplan[i].time_1=date.date()
-        miniplan[i].time_2=date.add(days=1).date()
-        miniplan[i].intervention_session_id=request.intervention_session_id
-        miniplan[i].pilot_id=request.pilot_id
+        miniplan[i].time_1 = date.date()
+        miniplan[i].time_2 = date.add(days=1).date()
+        miniplan[i].intervention_session_id = request.intervention_session_id
+        miniplan[i].pilot_id = request.pilot_id
 
         date += step_send_msg
 
@@ -239,7 +241,7 @@ def scheduleLPendulum(request, resource, template, aged):
     :return: a miniplan that is a list of messages class with all the fields completed
     '''
     errors = {}
-    miniplanID=uuid.uuid4()
+    miniplanID = uuid.uuid4()
 
     if type(request.from_date) is not Pendulum:
         times = convertPendulum(request, template, resource)
@@ -301,11 +303,11 @@ def scheduleLPendulum(request, resource, template, aged):
     for i in range(0, lenloop):
         date = endtime - valid_interval
 
-        miniplan[i].miniplan_id=miniplanID
+        miniplan[i].miniplan_id = miniplanID
 
         miniplan[i].date = date.date()
-        miniplan[i].time_1=date.date()
-        miniplan[i].time_2=date.add(days=1).date()
+        miniplan[i].time_1 = date.date()
+        miniplan[i].time_2 = date.add(days=1).date()
 
         miniplan[i].time = scheduleHourFromDate(aged, date).time()
 
@@ -316,8 +318,8 @@ def scheduleLPendulum(request, resource, template, aged):
         miniplan[i].URL = msgs_tosend[i].url
         miniplan[i].channel = msgs_tosend[i].channels[0]['channel_name']
 
-        miniplan[i].intervention_session_id=request.intervention_session_id
-        miniplan[i].pilot_id=request.pilot_id
+        miniplan[i].intervention_session_id = request.intervention_session_id
+        miniplan[i].pilot_id = request.pilot_id
 
         valid_interval = valid_interval / (i + 2)
 
@@ -354,7 +356,7 @@ def schedulePPendulum(request, resource, template, aged):
 
     miniplan = [Message(count, aged.aged_id, intervention_session_id=1) for count in xrange(nmsg)]
 
-    miniplanID=uuid.uuid4()
+    miniplanID = uuid.uuid4()
 
     channels = getChannelsAvailable(template, aged)
 
@@ -389,7 +391,7 @@ def schedulePPendulum(request, resource, template, aged):
             if c % int(resource.every) == 0:
                 if i > lenloop:
                     break
-                miniplan[i].miniplan_id=miniplanID
+                miniplan[i].miniplan_id = miniplanID
                 miniplan[i].date = dt.date()
                 miniplan[i].time_1 = dt.date()
                 miniplan[i].time_2 = dt.subtract(days=1).date()
@@ -548,8 +550,6 @@ def scheduleLogarithmic(request, resource, template, aged):
         date = endtime - valid_interval
 
         miniplan[i].date = date.date()
-
-
 
         miniplan[i].time = scheduleHourFromDate(aged, date).time()
 

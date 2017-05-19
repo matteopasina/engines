@@ -1,5 +1,3 @@
-from model.ResourceMessage import ResourceMessage
-
 def getListMessages(messages, nmsg, resource, channels):
     '''
     Check the messages to send for the resource -> id_resource, compose the list based on importance of a message
@@ -33,7 +31,8 @@ def getListMessages(messages, nmsg, resource, channels):
 
         return list_messages
 
-#TODO fix
+
+# TODO fix
 def selectMessages(messages, nmsg, channels):
     comp_msgs = []
     msgs = []

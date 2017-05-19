@@ -3,7 +3,8 @@
 
 class Resource:
     def __init__(self, resource_id, category="", name="", subjects="", has_messages="", url="", partner="",
-                 translated="", periodic="", repeating_time="", media="", language="", description="", every="",on_day="",from_date=None,
+                 translated="", periodic="", repeating_time="", media="", language="", description="", every="",
+                 on_day="", from_date=None,
                  to_date=None):
         self.resource_id = resource_id
         self.category = category
@@ -20,5 +21,5 @@ class Resource:
         self.translated = translated
         self.periodic = periodic
         self.repeating_time = repeating_time
-        self.on_day=on_day
-        self.every=every
+        self.on_day = on_day
+        self.every = every

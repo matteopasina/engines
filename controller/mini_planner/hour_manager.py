@@ -50,6 +50,7 @@ def scheduleHour(user, time):
             print "User hour preference error"
             return
 
+
 def scheduleHourFromDate(user, date):
     '''
     Returns a date that has times between 8 and 20, depending on user hour preference, using the hour of the date
@@ -83,4 +84,3 @@ def scheduleHourFromDate(user, date):
             return datetime.strptime(str(rnd.choice(afternoon)) + ':' + minutes, '%H:%M')
         else:
             return date
-

@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import random as rnd
+
 from numpy.random.mtrand import choice
 
 

@@ -1,14 +1,13 @@
-import requests
-import pendulum
 import json
-from datetime import datetime
 
-from model.Resource import Resource
-from model.Template import Template
+import pendulum
+import requests
+
+from controller.utilities import getApipath, decodeMessage
 from model.Aged import Aged
+from model.Resource import Resource
 from model.ResourceMessage import ResourceMessage
-from controller.utilities import getApipath
-from controller.json_manager import decodeMessage
+from model.Template import Template
 
 
 def getTemplate(id_template):
@@ -18,10 +17,10 @@ def getTemplate(id_template):
     :return: template class filled
     '''
 
-    json_template = requests.get(getApipath()+'getTemplate/' + id_template).json()[0]
+    json_template = requests.get(getApipath() + 'getTemplate/' + id_template).json()[0]
 
     if 'Template' in json_template:
-        json_template=json_template['Template']
+        json_template = json_template['Template']
     else:
         return None
 
@@ -48,10 +47,10 @@ def getResource(id_resource):
     :return: resource class filled
     '''
 
-    json_resource = requests.get(getApipath()+'getResource/' + id_resource).json()[0]
+    json_resource = requests.get(getApipath() + 'getResource/' + id_resource).json()[0]
 
     if 'Resource' in json_resource:
-        json_resource=json_resource['Resource']
+        json_resource = json_resource['Resource']
     else:
         return None
 
@@ -78,6 +77,7 @@ def getResource(id_resource):
 
     return resource
 
+
 def getResourceMessages(id_resource):
     '''
     Makes a API call to get the messages of a resource having the id, fill a list of ResourceMessage classes and returns it
@@ -85,28 +85,29 @@ def getResourceMessages(id_resource):
     :return: list of ResourceMessage of the desired resource
     '''
 
-    messages=[]
-    json_messages_resource = requests.get(getApipath()+'getResourceMessages/' + id_resource).json()[0]
+    messages = []
+    json_messages_resource = requests.get(getApipath() + 'getResourceMessages/' + id_resource).json()[0]
 
     if 'Messages' in json_messages_resource:
-        json_messages_resource=json_messages_resource['Messages']
+        json_messages_resource = json_messages_resource['Messages']
     else:
         return None
 
     for m in json_messages_resource:
-        rm=ResourceMessage(m['message_id'])
-        rm.channels=m['channels']
-        rm.is_compulsory=m['is_compulsory']
-        rm.communication_style=m['communication_style']
-        rm.semantic_type=m['semantic_type']
-        rm.audio=m['audio']
-        rm.video=m['video']
-        rm.media=m['media']
-        rm.text=m['text']
-        rm.url=m['url']
+        rm = ResourceMessage(m['message_id'])
+        rm.channels = m['channels']
+        rm.is_compulsory = m['is_compulsory']
+        rm.communication_style = m['communication_style']
+        rm.semantic_type = m['semantic_type']
+        rm.audio = m['audio']
+        rm.video = m['video']
+        rm.media = m['media']
+        rm.text = m['text']
+        rm.url = m['url']
         messages.append(rm)
 
     return messages
+
 
 # TODO fix hour preference
 def getAged(id_aged):
@@ -116,10 +117,10 @@ def getAged(id_aged):
     :return: user class filled
     '''
 
-    json_aged = requests.get(getApipath()+'getProfile/' + id_aged).json()[0]
+    json_aged = requests.get(getApipath() + 'getProfile/' + id_aged).json()[0]
 
     if 'Profile' in json_aged:
-        json_aged=json_aged['Profile']
+        json_aged = json_aged['Profile']
     else:
         return None
 
@@ -128,10 +129,10 @@ def getAged(id_aged):
     aged.surname = json_aged['surname']
 
     json_communicative = \
-    requests.get(getApipath()+'getProfileCommunicativeDetails/' + id_aged).json()[0]
+        requests.get(getApipath() + 'getProfileCommunicativeDetails/' + id_aged).json()[0]
 
     if 'Profile' in json_communicative:
-        json_communicative=json_communicative['Profile']
+        json_communicative = json_communicative['Profile']
     else:
         return None
 
@@ -155,9 +156,9 @@ def getAged(id_aged):
     aged.address = json_tech['address']
     aged.telephone_home_number = json_tech['telephone_home_number']
     aged.mobile_phone_number = json_tech['mobile_phone_number']
-    aged.email=json_tech['email']
-    aged.facebook=json_tech['facebook_account']
-    aged.telegram=json_tech['telegram_account']
+    aged.email = json_tech['email']
+    aged.facebook = json_tech['facebook_account']
+    aged.telegram = json_tech['telegram_account']
 
     # json_hourPref = requests.get('http://hoc3.elet.polimi.it:8080/c4aAPI/getProfileHourPreferences/' + id_aged).json()
     # aged.hour_preference = json_hourPref[0]['Preferences']['hour_period_id']
@@ -165,14 +166,35 @@ def getAged(id_aged):
     return aged
 
 
-# TODO fix getMiniplanMessagesCommitted
+# TODO fix getMiniplanCommitted, getMiniplanTemporaryMessages
 def getMessages(id_user):
-
     all_messages = []
 
-    messages=requests.get(getApipath()+'getMiniplanGeneratedMessages/' + id_user).json()[0]['Messages']
+    finalMessages = requests.get(getApipath() + 'getAllProfileMiniplanFinalMessages/' + id_user).json()[0]
+    if 'Messages' in finalMessages:
+        finalMessages = finalMessages['Messages']
+    else:
+        finalMessages = {}
 
-    for m in messages:
-        all_messages.append(decodeMessage(json.loads(m['message_body'])))
+    temporaryMiniplans = requests.get(getApipath() + 'getMiniplanCommitted/' + id_user).json()[0]
+    if 'Messages' in temporaryMiniplans:
+        temporaryMiniplans = temporaryMiniplans['Messages']
+    else:
+        temporaryMiniplans = {}
 
-    return all_messages
+    print finalMessages
+    print temporaryMiniplans
+
+    for f in finalMessages:
+        all_messages.append(decodeMessage(json.loads(f['message_body'])))
+
+    for t in temporaryMiniplans:
+        temporaryMessages = \
+        requests.get(getApipath() + 'getMiniplanGeneratedMessages/' + str(t['miniplan_generated_id'])).json()[0][
+            'Messages']
+        for tm in temporaryMessages:
+            temp = decodeMessage(json.loads(tm['message_body']))
+            temp.final = False
+            all_messages.append(temp)
+
+    return all_messages, temporaryMiniplans

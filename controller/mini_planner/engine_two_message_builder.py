@@ -41,6 +41,7 @@ def generate_message_text(user, main_text, url):
 
     return complete_text
 
+
 def buildMessage(aged, resourceMessage):
     '''
         Returns the text of the message

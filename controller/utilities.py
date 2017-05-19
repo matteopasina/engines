@@ -1,10 +1,11 @@
 from datetime import datetime, timedelta
+
 import pendulum
 
+from model.Aged import Aged
 from model.Message import Message
 from model.Resource import Resource
 from model.Template import Template
-from model.Aged import Aged
 
 
 def mapDay(on_day):
@@ -181,6 +182,7 @@ def mapResource(res_dict):
         resource.to_date = datetime.strptime(res_dict['To date'], '%d/%m/%Y')
     return resource
 
+
 def mapTemplate(temp_dict):
     '''
     Maps a template dictionary to a template class
@@ -197,6 +199,7 @@ def mapTemplate(temp_dict):
     template.channels = temp_dict['Canale'].split(', ')
     return template
 
+
 def mapProfile(aged_dict):
     '''
     Maps a aged dictionary to a aged class
@@ -212,6 +215,7 @@ def mapProfile(aged_dict):
         aged.hour_preference = aged_dict['hour_preference']
     return aged
 
+
 def getApipath():
     cfg = open('controller/config.cfg', 'r')
     for line in cfg:
@@ -222,6 +226,7 @@ def getApipath():
     cfg.close()
     return apipath
 
+
 def getDeliverypath():
     cfg = open('controller/config.cfg', 'r')
     for line in cfg:
@@ -231,3 +236,40 @@ def getDeliverypath():
 
     cfg.close()
     return deliverypath
+
+
+def encodeMessage(message):
+    dict = {}
+    dict['miniplan_id'] = message.miniplan_id
+    dict['intervention_session_id'] = message.intervention_session_id
+    dict['pilot_id'] = message.pilot_id
+    dict['time_2'] = message.time_2
+    dict['time_1'] = message.time_1
+    dict['time'] = message.time
+    dict['message_id'] = message.message_id
+    dict['channel'] = message.channel
+    dict['user_id'] = message.user_id
+    dict['date'] = message.date
+    dict['expiration_date'] = message.expiration_date
+    dict['attached_audio'] = message.attached_audio
+    dict['attached_media'] = message.attached_media
+    dict['message_text'] = message.message_text.replace("'", " ")
+    dict['URL'] = message.URL
+    return dict
+
+
+def decodeMessage(dict):
+    message = Message(dict['message_id'], dict['user_id'], dict['intervention_session_id'])
+    message.miniplan_id = dict['miniplan_id']
+    message.pilot_id = dict['pilot_id']
+    message.time_2 = dict['time_2']
+    message.time_1 = dict['time_1']
+    message.time = dict['time']
+    message.channel = dict['channel']
+    message.date = dict['date']
+    message.expiration_date = dict['expiration_date']
+    message.attached_audio = dict['attached_audio']
+    message.attached_media = dict['attached_media']
+    message.message_text = dict['message_text']
+    message.URL = dict['URL']
+    return message

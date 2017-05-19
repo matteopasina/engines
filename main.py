@@ -10,12 +10,15 @@ app = Flask(__name__)
 
 @app.route('/engine_one', methods=['GET', 'POST'])
 def e1():
-    return launch_engine_one_Pendulum(request.get_json())
+    if request.method == 'POST':
+        return launch_engine_one_Pendulum(request)
 
 
 @app.route('/engine_three', methods=['GET', 'POST'])
 def e2():
-    return launch_engine_three(request.get_json())
+    if request.method == 'POST':
+        return launch_engine_three(request)
+
 
 if __name__ == '__main__':
-  app.run(debug=True)
+    app.run(debug=True)

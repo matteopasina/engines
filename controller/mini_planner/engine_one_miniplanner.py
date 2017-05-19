@@ -4,9 +4,8 @@ import csv
 
 from controller.get_data import *
 from controller.json_manager import decodeRequest, encodeResponse, decodeRequestPendulum
-from controller.utilities import mapResource, mapTemplate, mapProfile
 from controller.mini_planner import message_prescheduler
-
+from controller.utilities import mapResource
 from model.Aged import Aged
 
 
@@ -61,31 +60,31 @@ def launch_engine_one(json_req):
     requests.post("http://.../endpoint/setNewMiniplanGenerated/", params=data)
     '''
 
-
     '''Encode response: builds json
     '''
     return encodeResponse(response[0], response[1])
 
-def launch_engine_one_Pendulum(json_req):
-    response=[{},{}]
-    req = decodeRequestPendulum(json_req)
-    template=None
-    aged=None
-    resource=None
 
-    template=getTemplate(req.template_id)
+def launch_engine_one_Pendulum(post_req):
+    response = [{}, {}]
+    req = decodeRequestPendulum(post_req)
+    template = None
+    aged = None
+    resource = None
+
+    template = getTemplate(req.template_id)
     if template is None:
-        response[0]={'Error': 'Template not found'}
-        response[1]={}
+        response[0] = {'Error': 'Template not found'}
+        response[1] = {}
         return encodeResponse(response[0], response[1], req)
 
-    resource=getResource(req.resource_id)
+    resource = getResource(req.resource_id)
     if resource is None:
         response[0] = {'Error': 'Resource not found'}
         response[1] = {}
         return encodeResponse(response[0], response[1], req)
 
-    aged=getAged(req.aged_id)
+    aged = getAged(req.aged_id)
     if aged is None:
         response[0] = {'Error': 'Aged not found'}
         response[1] = {}

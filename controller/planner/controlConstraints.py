@@ -34,7 +34,7 @@ def controlMsgsDay(messages, max_msgs_day=5, max_same_resource=2):
                 if m.miniplan_id == mj.miniplan_id:
                     c += 1
 
-                if c > max_same_resource and m.miniplan_id == mj.miniplan_id:
+                if c > max_same_resource and m.miniplan_id == mj.miniplan_id and mj.final is False:
                     if day + timedelta(days=1) not in messages:
                         mj.date = datetime.combine(day + timedelta(days=1), timezero)
                         messages[day + timedelta(days=1)] = [mj]
@@ -50,8 +50,8 @@ def controlMsgsDay(messages, max_msgs_day=5, max_same_resource=2):
         if len(messages[day]) > max_msgs_day:
 
             for m in messages[day]:
-                #move the messages that are scheduled al least 2 days before their expiration date
-                if (m.expiration_date - day) > timedelta(days=2):
+                # move the messages that are scheduled al least 2 days before their expiration date
+                if (m.expiration_date - day) > timedelta(days=2) and m.final is False:
                     if day + timedelta(days=1) not in messages:
                         messages[day].remove(m)
                         m.date = datetime.combine(day + timedelta(days=1), timezero)
@@ -65,12 +65,12 @@ def controlMsgsDay(messages, max_msgs_day=5, max_same_resource=2):
                 if len(messages[day]) <= max_msgs_day:
                     break
 
-            #if the previous condition is not enough move the messages with only one day of margin to the expiration date
+            # if the previous condition is not enough move the messages with only one day of margin to the expiration date
             if len(messages[day]) > max_msgs_day:
 
                 for m in messages[day]:
 
-                    if (m.expiration_date - day) > timedelta(days=1):
+                    if (m.expiration_date - day) > timedelta(days=1) and m.final is False:
                         if day + timedelta(days=1) not in messages:
                             messages[day].remove(m)
                             m.date = datetime.combine(day + timedelta(days=1), timezero)
