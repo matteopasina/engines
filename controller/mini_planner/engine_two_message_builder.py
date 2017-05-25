@@ -3,6 +3,7 @@
 import random
 
 
+# OLD
 def generate_message_text(user, main_text, url):
     '''
     Returns the text of the message

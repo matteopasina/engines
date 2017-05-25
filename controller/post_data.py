@@ -1,7 +1,10 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import requests
 from pendulum import Date
 
-from utilities import getApipath, encodeMessage
+from utilities import getApipath, encodeMessage, dictToString
 
 
 def postMiniplanGenerated(miniplan_messages, req):
@@ -15,7 +18,7 @@ def postMiniplanGenerated(miniplan_messages, req):
     params = {'generation_date': Date.today().to_date_string(), 'from_date': req.from_date.to_date_string(),
               'to_date': req.to_date.to_date_string(),
               'resource_id': req.resource_id, 'template_id': req.template_id,
-              'intervention_id': req.intervention_session_id, 'is_committed': 'True',
+              'intervention_id': req.intervention_session_id, 'is_committed': 'True', 'aged_id': req.aged_id,
               'miniplan_body': miniplan_messages}
 
     print params
@@ -25,7 +28,7 @@ def postMiniplanGenerated(miniplan_messages, req):
     print r
 
     if 'new_id' in r[0]:
-        return r[0]['new_id']
+        return r[0]['new_id'], r[0]['temporary_id']
 
 
 def postGeneratedMessage(message, jsonMessage):
@@ -35,14 +38,19 @@ def postGeneratedMessage(message, jsonMessage):
     :param jsonMessage: the message in json format
     :return: nothing
     '''
-    paramsMessage = {'time_prescription': message.date, 'channel': message.channel,
+    paramsMessage = {'time_prescription': message.date, 'channel': message.channel, 'media': message.attached_media,
+                     'text': message.message_text, 'url': message.URL, 'video': message.video,
+                     'audio': message.attached_audio, 'status': 'to send', 'message_id': message.message_id,
+                     'range_day_start': message.date, 'range_day_end': message.date,
+                     'range_hour_start': message.time.strftime("%H:%M"),
+                     'range_hour_end': message.time.strftime("%H:%M"),
                      'generation_date': Date.today().to_date_string(),
-                     'message_body': jsonMessage, 'miniplan_generated_id': message.miniplan_id,
+                     'miniplan_generated_id': message.miniplan_id,
                      'intervention_session_id': message.intervention_session_id}
 
     print paramsMessage
 
-    r = requests.post(getApipath() + "setNewMiniplanGeneratedMessage", data=paramsMessage).json()
+    r = requests.post(getApipath() + "setNewMiniplanGeneratedMessage/", data=paramsMessage).json()
 
     print r
 
@@ -78,11 +86,11 @@ def postFinalMessage(message):
     :param jsonMessage: the message in json format
     :return: nothing
     '''
-    paramsMessage = {'time_prescription': message.date, 'channel': message.channel, 'is_modified': 'False',
-                     'message_body': encodeMessage(message), 'miniplan_id': message.miniplan_id, 'status': message.status,
-                     'intervention_session_id': message.intervention_session_id}
 
-    print paramsMessage
+    paramsMessage = {'time_prescription': message.date, 'channel': message.channel, 'is_modified': 'False',
+                     'message_body': dictToString(encodeMessage(message)), 'miniplan_id': message.miniplan_id,
+                     'status': message.status,
+                     'intervention_session_id': message.intervention_session_id}
 
     r = requests.post(getApipath() + "setNewMiniplanFinalMessage/", data=paramsMessage).json()
 

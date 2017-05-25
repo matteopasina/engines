@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 def getListMessages(messages, nmsg, resource, channels):
     '''
     Check the messages to send for the resource -> id_resource, compose the list based on importance of a message
@@ -32,8 +35,15 @@ def getListMessages(messages, nmsg, resource, channels):
         return list_messages
 
 
-# TODO fix
 def selectMessages(messages, nmsg, channels):
+    '''
+    Select which messages of the resource to send, it checks if they are compulsory and then chooses the messages in order
+    The order is given by the id in the DB
+    :param messages: messages of the resource
+    :param nmsg: number of messages
+    :param channels: channels available
+    :return: list of messages selected
+    '''
     comp_msgs = []
     msgs = []
     list_messages = []

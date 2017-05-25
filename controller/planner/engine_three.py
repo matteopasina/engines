@@ -3,6 +3,8 @@
 
 from operator import attrgetter
 
+from pendulum import parse
+
 from controller.delivery.engine_four_delivery import sendIntervention
 from controller.get_data import getMessages
 from controller.json_manager import encodePlan
@@ -10,25 +12,23 @@ from controller.planner.controlConstraints import controlMsgsDay
 from controller.post_data import postMiniplanFinal, postFinalMessage
 from controller.utilities import rebuildMiniplans
 from model.Aged import Aged
-from pendulum import parse
 
 
+# TODO probably the messages are not scheduled correctly in the same day
 def launch_engine_three(post_req):
+    '''
+    Launch the engine_three: the planner. schedules the messages of one user, it gets the messages 
+    committed and puts it in the final messages scheduling in a smart way
+    :param post_req: the post request
+    :return: the plan of the user
+    '''
+
     aged_id = post_req.form["aged_id"]
     errors = {}
     all_messages = []
     response = [{}, {}]
     dict_m = {}
 
-    '''
-    with open('csv/prova_miniplans.csv') as csvmessages:
-        miniplans = csv.DictReader(csvmessages)
-        for m in miniplans:
-            for key, value in json.loads(m['miniplan_body']).iteritems():
-                mes = mapMessage(value)
-                mes.expiration_date = datetime.strptime(m['to_date'], '%Y-%m-%d').date()
-                all_messages.append(mes)
-    '''
     '''
     aged = getAged(aged_id)
     if aged is None:
@@ -40,7 +40,9 @@ def launch_engine_three(post_req):
     aged = Aged('1')
     aged.mobile_phone_number = '393297634573'
     aged.email = 'matteopasina@gmail.com'
+    aged.facebook = 'https://www.messenger.com/t/1532723125/'
 
+    # gets all the messages committed and final of a user
     (all_messages, temporaryMiniplans) = getMessages(aged_id)
 
     sorted_messages = sorted(all_messages, key=attrgetter('date', 'time'))
@@ -55,6 +57,7 @@ def launch_engine_three(post_req):
 
     miniplans = rebuildMiniplans(sorted_messages)
 
+    # delivery
     for mini in miniplans:
         for m in miniplans[mini]:
             if m.final is False:
@@ -66,6 +69,7 @@ def launch_engine_three(post_req):
                 interventionResponse = sendIntervention(m, aged)
                 break
 
+    # post in DB
     for t in temporaryMiniplans:
         id_final = postMiniplanFinal(t)
         for mini in miniplans:
@@ -74,5 +78,7 @@ def launch_engine_three(post_req):
                     m.miniplan_id = id_final
                     m.final = True
                     postFinalMessage(m)
+
+    # writecsv(sorted_messages)
 
     return encodePlan(errors, sorted_messages)

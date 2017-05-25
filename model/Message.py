@@ -6,7 +6,7 @@ class Message:
                  URL=["www.google.com", "www.polimi.it"], attached_media=['Media1', 'Media2'],
                  attached_audio=['Audio1', 'Audio2'],
                  channel=None, date=None, time=None, pilot_id=1, miniplan_id=6, expiration_date=None, time_1=None,
-                 time_2=None, final=True, status=None):
+                 time_2=None, final=False, status=None, temporary_id=None, video=None):
         self.pilot_id = pilot_id
         self.message_id = message_id
         self.user_id = user_id
@@ -24,3 +24,5 @@ class Message:
         self.time_2 = time_2
         self.final = final
         self.status = status
+        self.temporary_id = temporary_id
+        self.video = video

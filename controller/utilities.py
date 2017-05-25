@@ -1,3 +1,7 @@
+# !/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import json
 from datetime import datetime, timedelta
 
 import pendulum
@@ -9,6 +13,11 @@ from model.Template import Template
 
 
 def mapDay(on_day):
+    '''
+    Map day of the week to corresponding number
+    :param on_day: string with day of the week
+    :return: number
+    '''
     day_of_event = None
     if on_day == 'Monday':
         day_of_event = 0
@@ -140,6 +149,11 @@ def rebuildMiniplans(all_messages):
 
 
 def mapMessage(message_dict):
+    '''
+    Maps a dict to a message object
+    :param dict: dict to map
+    :return: message object
+    '''
     message = Message(message_dict['message_id'], message_dict['user_id'], message_dict['intervention_session_id'])
     message.URL = message_dict['URL']
     message.attached_media = message_dict['attached_media']
@@ -152,6 +166,28 @@ def mapMessage(message_dict):
         message.date = datetime.strptime(message_dict['date'], '%Y-%m-%d')
     if message_dict['time'] != '':
         message.time = datetime.strptime(message_dict['time'], '%H:%M:%S')
+    return message
+
+
+def decodeMessage(dict):
+    '''
+    Maps a dict to a message object, same as mapMessage but not converting date and time in datetime obj
+    :param dict: dict to map
+    :return: message object
+    '''
+    message = Message(dict['message_id'], dict['user_id'], dict['intervention_session_id'])
+    message.miniplan_id = dict['miniplan_id']
+    message.pilot_id = dict['pilot_id']
+    message.time_2 = dict['time_2']
+    message.time_1 = dict['time_1']
+    message.time = dict['time']
+    message.channel = dict['channel']
+    message.date = dict['date']
+    message.expiration_date = dict['expiration_date']
+    message.attached_audio = dict['attached_audio']
+    message.attached_media = dict['attached_media']
+    message.message_text = dict['message_text']
+    message.URL = dict['URL']
     return message
 
 
@@ -216,29 +252,12 @@ def mapProfile(aged_dict):
     return aged
 
 
-def getApipath():
-    cfg = open('controller/config.cfg', 'r')
-    for line in cfg:
-        words = line.split(' ')
-        if words[0] == 'ApiPath:':
-            apipath = words[1].rstrip('\n')
-
-    cfg.close()
-    return apipath
-
-
-def getDeliverypath():
-    cfg = open('controller/config.cfg', 'r')
-    for line in cfg:
-        words = line.split(' ')
-        if words[0] == 'DeliveryPath:':
-            deliverypath = words[1].rstrip('\n')
-
-    cfg.close()
-    return deliverypath
-
-
 def encodeMessage(message):
+    '''
+    Message obj to dict
+    :param message: a message class
+    :return: a dict message
+    '''
     dict = {}
     dict['miniplan_id'] = message.miniplan_id
     dict['intervention_session_id'] = message.intervention_session_id
@@ -258,18 +277,53 @@ def encodeMessage(message):
     return dict
 
 
-def decodeMessage(dict):
-    message = Message(dict['message_id'], dict['user_id'], dict['intervention_session_id'])
-    message.miniplan_id = dict['miniplan_id']
-    message.pilot_id = dict['pilot_id']
-    message.time_2 = dict['time_2']
-    message.time_1 = dict['time_1']
-    message.time = dict['time']
+def decodeTemporaryMessage(dict):
+    '''
+    Maps a message returned by a getMiniplanTemporary to a message obj
+    :param dict: message dict
+    :return: message obj
+    '''
+    message = Message(dict['message_id'], 1, dict['intervention_session_id'])
+    message.miniplan_id = dict['miniplan_temporary_id']
+    message.time = dict['range_hour_start']
     message.channel = dict['channel']
-    message.date = dict['date']
-    message.expiration_date = dict['expiration_date']
-    message.attached_audio = dict['attached_audio']
-    message.attached_media = dict['attached_media']
-    message.message_text = dict['message_text']
-    message.URL = dict['URL']
+    message.date = dict['range_day_start']
+    message.attached_audio = dict['audio']
+    message.attached_media = dict['media']
+    message.message_text = dict['text']
+    message.URL = dict['url']
     return message
+
+
+def dictToString(dict):
+    return json.dumps(dict)
+
+
+def getApipath():
+    '''
+    Gets the DB api url from the config file
+    :return: api DB url
+    '''
+    cfg = open('controller/config.cfg', 'r')
+    for line in cfg:
+        words = line.split(' ')
+        if words[0] == 'ApiPath:':
+            apipath = words[1].rstrip('\n')
+
+    cfg.close()
+    return apipath
+
+
+def getDeliverypath():
+    '''
+    Gets the delivery url from the config file
+    :return: delivery url 
+    '''
+    cfg = open('controller/config.cfg', 'r')
+    for line in cfg:
+        words = line.split(' ')
+        if words[0] == 'DeliveryPath:':
+            deliverypath = words[1].rstrip('\n')
+
+    cfg.close()
+    return deliverypath

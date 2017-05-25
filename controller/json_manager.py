@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import csv
 import json
 import uuid
 from datetime import date, time, datetime
@@ -19,6 +20,7 @@ def encodeResponse(errors, miniplan, req=None):
     '''
     json_response = {}
     miniplan_message = {}
+    c = 0
 
     for message in miniplan:
         json_message = {}
@@ -29,7 +31,8 @@ def encodeResponse(errors, miniplan, req=None):
                     json_message[key] = value.replace("'", " ")
                 else:
                     json_message[key] = value
-        miniplan_message[message.message_id] = json_message
+        miniplan_message[c] = json_message
+        c += 1
 
     # print json.dumps({'Errors': errors}, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
     # print json.dumps({'Miniplan': miniplan_message}, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
@@ -39,13 +42,15 @@ def encodeResponse(errors, miniplan, req=None):
     if req is not None:
         jsonToPost = json.dumps(miniplan_message, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
 
-        miniplan_id = postMiniplanGenerated(jsonToPost, req)
+        miniplan_id, temporary_id = postMiniplanGenerated(jsonToPost, req)
 
         for msgs in miniplan_message:
             miniplan_message[msgs]['miniplan_id'] = miniplan_id
+            miniplan_message[msgs]['temporary_id'] = temporary_id
 
         for m in miniplan:
             m.miniplan_id = miniplan_id
+            m.temporary_id = temporary_id
             mdict = encodeMessage(m)
             jsonMToPost = json.dumps(mdict, default=json_serial, sort_keys=True, indent=4, separators=(',', ': '))
             postGeneratedMessage(m, jsonMToPost)
@@ -77,6 +82,30 @@ def encodePlan(errors, plan):
     json_response['Plan'] = plan_message
     return json.dumps({'Response': json_response}, default=json_serial, sort_keys=True, indent=4,
                       separators=(',', ': '))
+
+
+def writecsv(plan):
+    '''
+    writes the plan to a csv
+    :param plan: 
+    :return: 
+    '''
+    plan_message = {}
+    for message in plan:
+        json_message = {}
+
+        for key, value in message.__dict__.iteritems():
+            if not callable(value) and not key.startswith('__'):
+                json_message[key] = value
+        plan_message[id] = json_message
+        id += 1
+    with open('plans.csv', 'w') as csvfile:
+        fieldnames = ['URL', 'attached_media', 'date', 'time', 'channel', 'miniplan_id', 'status', 'video',
+                      'attached_audio', 'message_text', 'intervention_session_id', 'user_id']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for p in plan_message:
+            writer.writerow(p)
 
 
 def decodeRequestOld(request_json):

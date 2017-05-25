@@ -3,7 +3,7 @@ import json
 import pendulum
 import requests
 
-from controller.utilities import getApipath, decodeMessage
+from controller.utilities import getApipath, decodeMessage, decodeTemporaryMessage
 from model.Aged import Aged
 from model.Resource import Resource
 from model.ResourceMessage import ResourceMessage
@@ -166,8 +166,12 @@ def getAged(id_aged):
     return aged
 
 
-# TODO fix getMiniplanCommitted, getMiniplanTemporaryMessages
 def getMessages(id_user):
+    '''
+    Gets all the messages in the DB to send to a aged
+    :param id_user: the aged id
+    :return: the messages to schedule and the temporary Miniplan associated
+    '''
     all_messages = []
 
     finalMessages = requests.get(getApipath() + 'getAllProfileMiniplanFinalMessages/' + id_user).json()[0]
@@ -182,18 +186,17 @@ def getMessages(id_user):
     else:
         temporaryMiniplans = {}
 
-    print finalMessages
-    print temporaryMiniplans
-
     for f in finalMessages:
-        all_messages.append(decodeMessage(json.loads(f['message_body'])))
+        temp = decodeMessage(json.loads(f['message_body']))
+        temp.final = True
+        all_messages.append(temp)
 
     for t in temporaryMiniplans:
         temporaryMessages = \
-        requests.get(getApipath() + 'getMiniplanGeneratedMessages/' + str(t['miniplan_generated_id'])).json()[0][
-            'Messages']
+            requests.get(getApipath() + 'getMiniplanTemporaryMessages/' + str(t['miniplan_temporary_id'])).json()[0][
+                'Messages']
         for tm in temporaryMessages:
-            temp = decodeMessage(json.loads(tm['message_body']))
+            temp = decodeTemporaryMessage(tm)
             temp.final = False
             all_messages.append(temp)
 

@@ -141,12 +141,13 @@ def P(miniplan, lenloop, startime, endtime, period, aged):
 
 def scheduleEDPPendulum(request, resource, template, aged):
     '''
-        Returns the miniplan with the temporal interval between the msgs divided equally with Pendulum
-        :param request: a request class
-        :param template: a template class
-        :param aged: a user class
-        :return: a miniplan that is a list of messages class with all the fields completed
-        '''
+    Returns the miniplan with the temporal interval between the msgs divided equally with Pendulum
+    :param request: a request class
+    :param resource: a resource class
+    :param template: a template class
+    :param aged: a user class
+    :return: a miniplan that is a list of messages class with all the fields completed
+    '''
     errors = {}
     miniplanID = uuid.uuid4()
 
@@ -175,12 +176,6 @@ def scheduleEDPPendulum(request, resource, template, aged):
     miniplan = [Message(count, aged.aged_id, intervention_session_id=1) for count in xrange(nmsg)]
 
     channels = getChannelsAvailable(template, aged)
-
-    '''
-    with open('csv/prova_import_messages.csv') as csvmessages:
-        messages = csv.DictReader(csvmessages)
-        msgs_tosend = getListMessages(messages, nmsg, resource, channels)
-    '''
 
     messages = getResourceMessages(resource.resource_id)
     if messages is None:
@@ -214,6 +209,7 @@ def scheduleEDPPendulum(request, resource, template, aged):
         miniplan[i].message_text = buildMessage(aged, msgs_tosend[i])
         miniplan[i].attached_audio = msgs_tosend[i].audio
         miniplan[i].attached_media = msgs_tosend[i].media
+        miniplan[i].message_id = msgs_tosend[i].message_id
         miniplan[i].URL = msgs_tosend[i].url
         miniplan[i].channel = msgs_tosend[i].channels[0]['channel_name']
         miniplan[i].time_1 = date.date()
@@ -236,6 +232,7 @@ def scheduleLPendulum(request, resource, template, aged):
     Last message always sent the day before the event
     With Pendulum
     :param request: a request class
+    :param resource: a resource class
     :param template: a template class
     :param aged: a user class
     :return: a miniplan that is a list of messages class with all the fields completed
@@ -280,12 +277,6 @@ def scheduleLPendulum(request, resource, template, aged):
 
     msgs_tosend = selectMessages(messages, nmsg, channels)
 
-    '''
-    with open('csv/prova_import_messages.csv') as csvmessages:
-        messages = csv.DictReader(csvmessages)
-        msgs_tosend = getListMessages(messages, nmsg, resource, channels)
-    '''
-
     er = checkForErrors(errors, endtime, expirationtime, startime, miniplan, nmsg, len(msgs_tosend))
     errors = er[0]
     miniplan = er[1]
@@ -316,6 +307,8 @@ def scheduleLPendulum(request, resource, template, aged):
         miniplan[i].attached_audio = msgs_tosend[i].audio
         miniplan[i].attached_media = msgs_tosend[i].media
         miniplan[i].URL = msgs_tosend[i].url
+        miniplan[i].message_id = msgs_tosend[i].message_id
+
         miniplan[i].channel = msgs_tosend[i].channels[0]['channel_name']
 
         miniplan[i].intervention_session_id = request.intervention_session_id
@@ -329,6 +322,15 @@ def scheduleLPendulum(request, resource, template, aged):
 
 
 def schedulePPendulum(request, resource, template, aged):
+    '''
+    Build the miniplan for periodic resources, i.e. the resource is on_day Friday and every 2 
+    it schedules(in the interval set by the care_giver) a message every 2 Thursday 
+    :param request: a request class
+    :param resource: a resource class
+    :param template: a template class
+    :param aged: a user class
+    :return: a miniplan that is a list of messages class with all the fields completed
+    '''
     errors = {}
 
     if type(request.from_date) is not Pendulum:
@@ -360,6 +362,7 @@ def schedulePPendulum(request, resource, template, aged):
 
     channels = getChannelsAvailable(template, aged)
 
+    # substitute with the call at the DB
     with open('csv/prova_import_messages.csv') as csvmessages:
         messages = csv.DictReader(csvmessages)
         msgs_tosend = getListMessages(messages, nmsg, resource, channels)
@@ -399,6 +402,8 @@ def schedulePPendulum(request, resource, template, aged):
                 miniplan[i].attached_audio = msgs_tosend[i]['Audio']
                 miniplan[i].attached_media = msgs_tosend[i]['Media']
                 miniplan[i].URL = msgs_tosend[i]['URL']
+                miniplan[i].message_id = msgs_tosend[i].message_id
+
                 miniplan[i].channel = msgs_tosend[i]['Channel']
                 miniplan[i].message_text = generate_message_text(aged, msgs_tosend[i]['Text'],
                                                                  msgs_tosend[i]['URL'])
@@ -414,6 +419,7 @@ def schedulePPendulum(request, resource, template, aged):
     return errors, miniplan
 
 
+# OLD
 def scheduleEquallyDividedPeriod(request, resource, template, aged):
     '''
     Returns the miniplan with the temporal interval between the msgs divided equally
@@ -486,6 +492,7 @@ def scheduleEquallyDividedPeriod(request, resource, template, aged):
     return errors, miniplan
 
 
+# OLD
 def scheduleLogarithmic(request, resource, template, aged):
     '''
     Returns the miniplan scheduled with more frequency at the end of the interval
@@ -567,6 +574,7 @@ def scheduleLogarithmic(request, resource, template, aged):
     return errors, miniplan
 
 
+# OLD
 def schedulePeriodic(request, resource, template, aged):
     print "Schedule Day"
     errors = {}
